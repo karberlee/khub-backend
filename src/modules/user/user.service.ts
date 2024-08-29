@@ -44,11 +44,13 @@ export class UserService {
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     try {
-      const res = await this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true }).exec();
-      console.log('res:', res)
-      if (!res) {
+      const user = await this.userModel.findById(id)
+      if (!user) {
         throw new NotFoundException(`User with ID ${id} not found`)
       }
+      Object.assign(user, updateUserDto) // 更新字段
+      const res = await user.save()
+      console.log('res:', res)
       return res
     } catch (error) {
       console.log("error:", error)
@@ -61,7 +63,7 @@ export class UserService {
       const res = await this.userModel.findByIdAndDelete(id)
       console.log('res:', res)
       if (!res) {
-        throw new NotFoundException(`User with ID ${id} not found`);
+        throw new NotFoundException(`User with ID ${id} not found`)
       }
       return res;
     } catch (error) {
