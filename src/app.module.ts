@@ -7,7 +7,7 @@ import { UserModule } from '@/modules/user/user.module'
 
 @Module({
   imports: [
-    MongooseModule.forRoot(mongoConfig.uri), 
+    MongooseModule.forRoot(process.env.MONGO_URI), 
     UserModule
   ],
   controllers: [AppController],

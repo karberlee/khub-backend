@@ -1,5 +1,7 @@
 import { NestFactory } from '@nestjs/core'
 import { ValidationPipe } from '@nestjs/common'
+import * as dotenv from 'dotenv'
+dotenv.config()
 import { AppModule } from './app.module'
 
 async function bootstrap() {
@@ -10,6 +12,8 @@ async function bootstrap() {
     forbidNonWhitelisted: true, // 禁止请求中包含 DTO 中不存在的字段
     disableErrorMessages: false, // 禁用错误消息（默认为 false）
   }))
-  await app.listen(3000)
+  const port = process.env.PORT || 3000
+  await app.listen(port)
+  console.log(`Application is running on port: ${port}`)
 }
 bootstrap()
