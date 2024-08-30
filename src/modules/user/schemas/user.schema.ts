@@ -6,7 +6,10 @@ export const UserSchema = new Schema<User>(
     password: { type: String, required: true },
     role: { type: Number, required: true }
   }, 
-  { optimisticConcurrency: true } // 开启__v自增
+  { 
+    optimisticConcurrency: true, // 开启__v自增
+    collection: 'user' // 设置collection
+  }
 )
 
 export interface User extends Document {
