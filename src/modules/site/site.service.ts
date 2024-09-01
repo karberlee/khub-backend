@@ -7,23 +7,68 @@ import { UpdateSiteDto } from './dto/update-site.dto'
 
 @Injectable()
 export class SiteService {
-  create(createSiteDto: CreateSiteDto) {
-    return 'This action adds a new site'
+  constructor(@InjectModel('Site') private readonly siteModel: Model<Site>) { }
+
+  async create(createSiteDto: CreateSiteDto) {
+    try {
+      const res = await this.siteModel.create(createSiteDto)
+      console.log('res:', res)
+      return res
+    } catch (error) {
+      console.log("error:", error)
+      return error
+    }
   }
 
-  findAll() {
-    return `This action returns all site`
+  async findAll() {
+    try {
+      const res = await this.siteModel.find()
+      console.log('res:', res)
+      return res
+    } catch (error) {
+      console.log("error:", error)
+      return error
+    }
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} site`
+  async findOne(id: string) {
+    try {
+      const res = await this.siteModel.findOne({ _id: id })
+      console.log('res:', res)
+      return res
+    } catch (error) {
+      console.log("error:", error)
+      return error
+    }
   }
 
-  update(id: string, updateSiteDto: UpdateSiteDto) {
-    return `This action updates a #${id} site`
+  async update(id: string, updateSiteDto: UpdateSiteDto) {
+    try {
+      const user = await this.siteModel.findById(id)
+      if (!user) {
+        throw new NotFoundException(`User with ID ${id} not found`)
+      }
+      Object.assign(user, updateSiteDto)
+      const res = await user.save()
+      console.log('res:', res)
+      return res
+    } catch (error) {
+      console.log("error:", error)
+      return error
+    }
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} site`
+  async remove(id: string) {
+    try {
+      const res = await this.siteModel.findByIdAndDelete(id)
+      console.log('res:', res)
+      if (!res) {
+        throw new NotFoundException(`User with ID ${id} not found`)
+      }
+      return res;
+    } catch (error) {
+      console.log("error:", error)
+      return error
+    }
   }
 }
