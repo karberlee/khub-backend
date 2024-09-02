@@ -12,10 +12,10 @@ export class SiteService {
   async create(createSiteDto: CreateSiteDto) {
     try {
       const res = await this.siteModel.create(createSiteDto)
-      console.log('res:', res)
+      $.logger.info('res:', res)
       return res
     } catch (error) {
-      console.log("error:", error)
+      $.logger.error("error:", error)
       return error
     }
   }
@@ -23,10 +23,10 @@ export class SiteService {
   async findAll() {
     try {
       const res = await this.siteModel.find()
-      console.log('res:', res)
+      $.logger.info('res:', res)
       return res
     } catch (error) {
-      console.log("error:", error)
+      $.logger.error("error:", error)
       return error
     }
   }
@@ -34,10 +34,10 @@ export class SiteService {
   async findOne(id: string) {
     try {
       const res = await this.siteModel.findOne({ _id: id })
-      console.log('res:', res)
+      $.logger.info('res:', res)
       return res
     } catch (error) {
-      console.log("error:", error)
+      $.logger.error("error:", error)
       return error
     }
   }
@@ -50,10 +50,10 @@ export class SiteService {
       }
       Object.assign(user, updateSiteDto)
       const res = await user.save()
-      console.log('res:', res)
+      $.logger.info('res:', res)
       return res
     } catch (error) {
-      console.log("error:", error)
+      $.logger.error("error:", error)
       return error
     }
   }
@@ -61,13 +61,13 @@ export class SiteService {
   async remove(id: string) {
     try {
       const res = await this.siteModel.findByIdAndDelete(id)
-      console.log('res:', res)
+      $.logger.info('res:', res)
       if (!res) {
         throw new NotFoundException(`User with ID ${id} not found`)
       }
       return res;
     } catch (error) {
-      console.log("error:", error)
+      $.logger.error("error:", error)
       return error
     }
   }

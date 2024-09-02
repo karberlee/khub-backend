@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core'
 import { ValidationPipe } from '@nestjs/common'
 import * as dotenv from 'dotenv'
 dotenv.config()
+import '@/common/global'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
@@ -14,6 +15,6 @@ async function bootstrap() {
   }))
   const port = process.env.PORT || 3000
   await app.listen(port)
-  console.log(`Application is running on port: ${port}`)
+  $.logger.log(`Application is running on port: ${port}`)
 }
 bootstrap()

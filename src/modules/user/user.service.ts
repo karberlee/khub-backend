@@ -12,10 +12,10 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     try {
       const res = await this.userModel.create(createUserDto)
-      console.log('res:', res)
+      $.logger.info('res:', res)
       return res
     } catch (error) {
-      console.log("error:", error)
+      $.logger.error("error:", error)
       return error
     }
   }
@@ -23,10 +23,10 @@ export class UserService {
   async findAll() {
     try {
       const res = await this.userModel.find()
-      console.log('res:', res)
+      $.logger.info('res:', res)
       return res
     } catch (error) {
-      console.log("error:", error)
+      $.logger.error("error:", error)
       return error
     }
   }
@@ -34,10 +34,10 @@ export class UserService {
   async findOne(id: string) {
     try {
       const res = await this.userModel.findOne({ _id: id })
-      console.log('res:', res)
+      $.logger.info('res:', res)
       return res
     } catch (error) {
-      console.log("error:", error)
+      $.logger.error("error:", error)
       return error
     }
   }
@@ -50,10 +50,10 @@ export class UserService {
       }
       Object.assign(user, updateUserDto) // 更新字段
       const res = await user.save()
-      console.log('res:', res)
+      $.logger.info('res:', res)
       return res
     } catch (error) {
-      console.log("error:", error)
+      $.logger.error("error:", error)
       return error
     }
   }
@@ -61,13 +61,13 @@ export class UserService {
   async remove(id: string) {
     try {
       const res = await this.userModel.findByIdAndDelete(id)
-      console.log('res:', res)
+      $.logger.info('res:', res)
       if (!res) {
         throw new NotFoundException(`User with ID ${id} not found`)
       }
       return res;
     } catch (error) {
-      console.log("error:", error)
+      $.logger.error("error:", error)
       return error
     }
   }
