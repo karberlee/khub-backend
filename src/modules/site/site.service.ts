@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, NotFoundException, BadRequestException, InternalServerErrorException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Site } from './schemas/site.schema'
@@ -16,7 +16,7 @@ export class SiteService {
       return res
     } catch (error) {
       $.logger.error("error:", error)
-      return error
+      throw new InternalServerErrorException('Internal server error')
     }
   }
 
@@ -27,34 +27,43 @@ export class SiteService {
       return res
     } catch (error) {
       $.logger.error("error:", error)
-      return error
+      throw new InternalServerErrorException('Internal server error')
     }
   }
 
   async findOne(id: string) {
     try {
       const res = await this.siteModel.findOne({ _id: id })
+      if (!res) {
+        throw new NotFoundException(`Site with ID ${id} not found`)
+      }
       $.logger.info('res:', res)
       return res
     } catch (error) {
       $.logger.error("error:", error)
-      return error
+      if (error instanceof NotFoundException) {
+        throw error
+      }
+      throw new InternalServerErrorException('Internal server error')
     }
   }
 
   async update(id: string, updateSiteDto: UpdateSiteDto) {
     try {
-      const user = await this.siteModel.findById(id)
-      if (!user) {
-        throw new NotFoundException(`User with ID ${id} not found`)
+      const site = await this.siteModel.findById(id)
+      if (!site) {
+        throw new NotFoundException(`Site with ID ${id} not found`)
       }
-      Object.assign(user, updateSiteDto)
-      const res = await user.save()
+      Object.assign(site, updateSiteDto)
+      const res = await site.save()
       $.logger.info('res:', res)
       return res
     } catch (error) {
       $.logger.error("error:", error)
-      return error
+      if (error instanceof NotFoundException) {
+        throw error
+      }
+      throw new InternalServerErrorException('Internal server error')
     }
   }
 
@@ -63,12 +72,15 @@ export class SiteService {
       const res = await this.siteModel.findByIdAndDelete(id)
       $.logger.info('res:', res)
       if (!res) {
-        throw new NotFoundException(`User with ID ${id} not found`)
+        throw new NotFoundException(`Site with ID ${id} not found`)
       }
       return res;
     } catch (error) {
       $.logger.error("error:", error)
-      return error
+      if (error instanceof NotFoundException) {
+        throw error
+      }
+      throw new InternalServerErrorException('Internal server error')
     }
   }
 }

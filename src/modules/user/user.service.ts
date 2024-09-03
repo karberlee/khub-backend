@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, NotFoundException, BadRequestException, InternalServerErrorException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { User } from './schemas/user.schema'
@@ -16,7 +16,7 @@ export class UserService {
       return res
     } catch (error) {
       $.logger.error("error:", error)
-      return error
+      throw new InternalServerErrorException('Internal server error')
     }
   }
 
@@ -27,18 +27,24 @@ export class UserService {
       return res
     } catch (error) {
       $.logger.error("error:", error)
-      return error
+      throw new InternalServerErrorException('Internal server error')
     }
   }
 
   async findOne(id: string) {
     try {
       const res = await this.userModel.findOne({ _id: id })
+      if (!res) {
+        throw new NotFoundException(`User with ID ${id} not found`)
+      }
       $.logger.info('res:', res)
       return res
     } catch (error) {
       $.logger.error("error:", error)
-      return error
+      if (error instanceof NotFoundException) {
+        throw error
+      }
+      throw new InternalServerErrorException('Internal server error')
     }
   }
 
@@ -54,7 +60,10 @@ export class UserService {
       return res
     } catch (error) {
       $.logger.error("error:", error)
-      return error
+      if (error instanceof NotFoundException) {
+        throw error
+      }
+      throw new InternalServerErrorException('Internal server error')
     }
   }
 
@@ -68,7 +77,10 @@ export class UserService {
       return res;
     } catch (error) {
       $.logger.error("error:", error)
-      return error
+      if (error instanceof NotFoundException) {
+        throw error
+      }
+      throw new InternalServerErrorException('Internal server error')
     }
   }
 }

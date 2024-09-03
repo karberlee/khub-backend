@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common'
+import { APP_FILTER } from '@nestjs/core'
 import { MongooseModule } from '@nestjs/mongoose'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { HttpExceptionFilter } from '@/common/filters/http-exception.filter'
 import { UserModule } from '@/modules/user/user.module'
 import { SiteModule } from '@/modules/site/site.module'
 
@@ -12,6 +14,12 @@ import { SiteModule } from '@/modules/site/site.module'
     SiteModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}
