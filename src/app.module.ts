@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common'
-import { APP_FILTER } from '@nestjs/core'
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
 import { MongooseModule } from '@nestjs/mongoose'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { HttpExceptionFilter } from '@/common/filters/http-exception.filter'
+import { LoggingInterceptor } from '@/common/interceptors/logging.interceptor'
 import { UserModule } from '@/modules/user/user.module'
 import { SiteModule } from '@/modules/site/site.module'
 
@@ -16,6 +17,10 @@ import { SiteModule } from '@/modules/site/site.module'
   controllers: [AppController],
   providers: [
     AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,

@@ -12,7 +12,6 @@ export class SiteService {
   async create(createSiteDto: CreateSiteDto) {
     try {
       const res = await this.siteModel.create(createSiteDto)
-      $.logger.info('res:', res)
       return res
     } catch (error) {
       $.logger.error("error:", error)
@@ -23,7 +22,6 @@ export class SiteService {
   async findAll() {
     try {
       const res = await this.siteModel.find()
-      $.logger.info('res:', res)
       return res
     } catch (error) {
       $.logger.error("error:", error)
@@ -37,7 +35,6 @@ export class SiteService {
       if (!res) {
         throw new NotFoundException(`Site with ID ${id} not found`)
       }
-      $.logger.info('res:', res)
       return res
     } catch (error) {
       $.logger.error("error:", error)
@@ -56,7 +53,6 @@ export class SiteService {
       }
       Object.assign(site, updateSiteDto)
       const res = await site.save()
-      $.logger.info('res:', res)
       return res
     } catch (error) {
       $.logger.error("error:", error)
@@ -70,11 +66,10 @@ export class SiteService {
   async remove(id: string) {
     try {
       const res = await this.siteModel.findByIdAndDelete(id)
-      $.logger.info('res:', res)
       if (!res) {
         throw new NotFoundException(`Site with ID ${id} not found`)
       }
-      return res;
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       if (error instanceof NotFoundException) {
