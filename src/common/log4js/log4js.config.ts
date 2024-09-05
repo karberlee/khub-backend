@@ -8,13 +8,20 @@ log4js.configure({
     },
     file: {
       type: 'file', // 将日志输出到指定的文件
-      filename: 'full.log'
+      filename: 'full.log',
+      maxLogSize: 10000000, // 最大日志大小，日志文件达到此大小后将会进行轮转
+      backups: 5, // 指定保留的备份文件数量
+      compress: true // 启用文件压缩，日志文件在轮转时将被压缩为 .gz 文件，以节省磁盘空间
     },
     dailyFile: {
       type: 'dateFile', // 将日志输出到按日期分割的文件
       filename: path.join(process.cwd(), 'logs/daily.log'), // log输出路径和基础文件名
+      // maxLogSize: 10000000, // 最大日志大小，日志文件达到此大小后将会进行轮转
+      // backups: 5, // 指定保留的备份文件数量
       pattern: 'yyyy-MM-dd', // 按日期分割log文件，用于生成文件名的日期部分
-      alwaysIncludePattern: true // 是否总是包括日期模式，即使日志文件没有变动
+      alwaysIncludePattern: true, // 是否总是包括日期模式，即使日志文件没有变动
+      daysToKeep: 5, // 保留的最大天数（注意：`daysToKeep` 是 Log4js 6.x 版本新增的属性，用于自动删除过期日志）
+      compress: true // 启用文件压缩，日志文件在轮转时将被压缩为 .gz 文件，以节省磁盘空间
     }
   },
   categories: {
