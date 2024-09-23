@@ -7,7 +7,14 @@ import '@/shared/global'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
+
   const app = await NestFactory.create(AppModule)
+
+  // 处理跨域
+  app.enableCors({
+    origin: true, // 允许的源
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // 允许的方法
+  });
 
   // DTO 处理
   app.useGlobalPipes(new ValidationPipe({
