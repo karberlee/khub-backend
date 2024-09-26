@@ -5,12 +5,14 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { HttpExceptionFilter } from '@/common/filters/http-exception.filter'
 import { LoggingInterceptor } from '@/common/interceptors/logging.interceptor'
+import { AuthModule } from '@/modules/auth/auth.module'
 import { UserModule } from '@/modules/user/user.module'
 import { SiteModule } from '@/modules/site/site.module'
 
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGO_URI), 
+    AuthModule,
     UserModule,
     SiteModule
   ],
