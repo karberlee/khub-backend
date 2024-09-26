@@ -11,11 +11,12 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     try {
+      createUserDto.role = 1
       const res = await this.userModel.create(createUserDto)
       return res
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException('Internal server error')
+      throw new InternalServerErrorException(error)
     }
   }
 
@@ -25,7 +26,7 @@ export class UserService {
       return res
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException('Internal server error')
+      throw new InternalServerErrorException(error)
     }
   }
 
@@ -41,7 +42,7 @@ export class UserService {
       if (error instanceof NotFoundException) {
         throw error
       }
-      throw new InternalServerErrorException('Internal server error')
+      throw new InternalServerErrorException(error)
     }
   }
 
@@ -59,7 +60,7 @@ export class UserService {
       if (error instanceof NotFoundException) {
         throw error
       }
-      throw new InternalServerErrorException('Internal server error')
+      throw new InternalServerErrorException(error)
     }
   }
 
@@ -75,7 +76,7 @@ export class UserService {
       if (error instanceof NotFoundException) {
         throw error
       }
-      throw new InternalServerErrorException('Internal server error')
+      throw new InternalServerErrorException(error)
     }
   }
 }

@@ -15,7 +15,7 @@ export class SiteService {
       return res
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException('Internal server error')
+      throw new InternalServerErrorException(error)
     }
   }
 
@@ -25,7 +25,7 @@ export class SiteService {
       return res
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException('Internal server error')
+      throw new InternalServerErrorException(error)
     }
   }
 
@@ -41,7 +41,7 @@ export class SiteService {
       if (error instanceof NotFoundException) {
         throw error
       }
-      throw new InternalServerErrorException('Internal server error')
+      throw new InternalServerErrorException(error)
     }
   }
 
@@ -59,7 +59,7 @@ export class SiteService {
       if (error instanceof NotFoundException) {
         throw error
       }
-      throw new InternalServerErrorException('Internal server error')
+      throw new InternalServerErrorException(error)
     }
   }
 
@@ -75,7 +75,7 @@ export class SiteService {
       if (error instanceof NotFoundException) {
         throw error
       }
-      throw new InternalServerErrorException('Internal server error')
+      throw new InternalServerErrorException(error)
     }
   }
 }

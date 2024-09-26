@@ -1,6 +1,7 @@
 import { IsString, IsInt } from 'class-validator'
 import { PartialType } from '@nestjs/mapped-types'
 import { ApiPropertyOptional } from '@nestjs/swagger'
+import { Type } from 'class-transformer'
 import { CreateUserDto } from './create-user.dto'
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
@@ -18,6 +19,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   })
   readonly password?: string
 
+  @Type(() => Number)  // 确保转换为数字
   @IsInt()
   @ApiPropertyOptional({
     description: 'The role of the user',
