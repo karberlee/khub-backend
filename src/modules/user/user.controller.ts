@@ -16,8 +16,9 @@ export class UserController {
     description: 'The user info to create',
     type: CreateUserDto,
   })
-  @ApiResponse({ status: 201, description: 'The user has been created' })
+  @ApiResponse({ status: 201, description: 'Successful response' })
   @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto)
   }
@@ -25,6 +26,8 @@ export class UserController {
   @Get()
   @ApiOperation({ summary: 'Find all user' })
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   findAll() {
     return this.userService.findAll()
   }
@@ -34,7 +37,7 @@ export class UserController {
   @ApiParam({ name: 'id', description: 'The user ID', type: String })
   @ApiResponse({ status: 200, description: 'Successful response' })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   findOne(@Param('id', ParseObjectIdPipe) id: string) {
     return this.userService.findOne(id)
   }
@@ -48,7 +51,7 @@ export class UserController {
   })
   @ApiResponse({ status: 200, description: 'Successful response' })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   update(@Param('id', ParseObjectIdPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto)
   }
@@ -58,7 +61,7 @@ export class UserController {
   @ApiParam({ name: 'id', description: 'The user ID', type: String })
   @ApiResponse({ status: 200, description: 'Successful response' })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   remove(@Param('id', ParseObjectIdPipe) id: string) {
     return this.userService.remove(id)
   }

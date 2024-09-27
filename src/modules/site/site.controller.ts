@@ -16,8 +16,9 @@ export class SiteController {
     description: 'The site info to create',
     type: CreateSiteDto,
   })
-  @ApiResponse({ status: 201, description: 'The site has been created' })
+  @ApiResponse({ status: 201, description: 'Successful response' })
   @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   create(@Body() createSiteDto: CreateSiteDto) {
     return this.siteService.create(createSiteDto)
   }
@@ -25,6 +26,8 @@ export class SiteController {
   @Get()
   @ApiOperation({ summary: 'Find all site' })
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   findAll() {
     return this.siteService.findAll()
   }
@@ -34,7 +37,7 @@ export class SiteController {
   @ApiParam({ name: 'id', description: 'The site ID', type: String })
   @ApiResponse({ status: 200, description: 'Successful response' })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   findOne(@Param('id', ParseObjectIdPipe) id: string) {
     return this.siteService.findOne(id)
   }
@@ -48,7 +51,7 @@ export class SiteController {
   })
   @ApiResponse({ status: 200, description: 'Successful response' })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiResponse({ status: 404, description: 'Site not found' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   update(@Param('id', ParseObjectIdPipe) id: string, @Body() updateSiteDto: UpdateSiteDto) {
     return this.siteService.update(id, updateSiteDto)
   }
@@ -58,7 +61,7 @@ export class SiteController {
   @ApiParam({ name: 'id', description: 'The site ID', type: String })
   @ApiResponse({ status: 200, description: 'Successful response' })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiResponse({ status: 404, description: 'Site not found' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   remove(@Param('id', ParseObjectIdPipe) id: string) {
     return this.siteService.remove(id)
   }

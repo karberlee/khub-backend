@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, InternalServerErrorException, UnauthorizedException } from '@nestjs/common'
+import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { User } from '@/modules/user/schemas/user.schema'
@@ -12,10 +12,10 @@ export class AuthService {
     try {
       const user = await this.userModel.findOne({ account: authDto.account })
       if (!user) {
-        return $.util.failRes(404, `User with account ${authDto.account} not found!`)
+        return $.util.failRes(404, `User with account ${authDto.account} not exist!`)
       }
       if (user.password !== authDto.password) {
-        return $.util.failRes(401, `Password incorrect!`)
+        return $.util.failRes(401, `Password Incorrect!`)
       }
       return $.util.successRes(0, user)
     } catch (error) {
