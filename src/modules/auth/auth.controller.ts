@@ -1,14 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger'
 import { AuthService } from './auth.service'
 import { CreateUserDto } from '@/modules/user/dto/create-user.dto'
+import { TokenInterceptor } from "@/common/interceptors/token.interceptor";
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
+  @Post('login')
+  @UseInterceptors(TokenInterceptor)
   @ApiOperation({ summary: 'Login' })
   @ApiBody({
     description: 'The user info to login',
