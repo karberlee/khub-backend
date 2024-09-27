@@ -1,5 +1,5 @@
-export const successRes = function(code: number, data: any): object {
-  return { code, data }
+export const successRes = function(code: number, body: any): object {
+  return { code, body }
 }
 
 export const failRes = function(code: number, message: string): object {

@@ -1,4 +1,4 @@
 export type utilType = {
-  successRes: (code: number, data: any) => object
+  successRes: (code: number, body: any) => object
   failRes: (code: number, message: string) => object
 }
