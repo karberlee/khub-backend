@@ -17,7 +17,11 @@ export class AuthService {
       if (user.password !== authDto.password) {
         return $.util.failRes(401, `Password Incorrect!`)
       }
-      return $.util.successRes(0, user)
+      return $.util.successRes(0, { 
+        _id: user._id,
+        account: user.account,
+        role: user.role
+       })
     } catch (error) {
       $.logger.error("error:", error)
       throw new InternalServerErrorException(error)
