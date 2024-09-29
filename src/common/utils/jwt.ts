@@ -1,6 +1,6 @@
 import { sign, verify, SignOptions, VerifyOptions } from 'jsonwebtoken'
 
-const secretKey: string = 'my_jwt_token'
+const secretKey: string = process.env.JWT_SECRET_KEY
 const defaultSignOptions: SignOptions = { expiresIn: '1h' }
 
 export const JWT = {

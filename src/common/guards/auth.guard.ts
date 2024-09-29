@@ -3,12 +3,16 @@ import { JWT } from '@/common/utils/jwt'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+  private readonly authApiList: String[] = [
+    '/auth/login',
+  ]
+
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest()
     const url = request.url
     
     // 忽略 login 请求
-    if (url === '/auth/login') return true
+    if (this.authApiList.indexOf(url) > -1) return true
 
     const token = request.headers['authorization']?.split(' ')[1] // 获取 Bearer token
 

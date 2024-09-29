@@ -5,5 +5,6 @@ declare global {
   var $: {
     logger: typeof logger
     util: typeof utilType
+    MailTool
   }
 }
