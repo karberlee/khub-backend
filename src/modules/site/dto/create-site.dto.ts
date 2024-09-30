@@ -4,6 +4,13 @@ import { ApiProperty } from '@nestjs/swagger'
 export class CreateSiteDto {
   @IsString()
   @ApiProperty({
+    description: 'The owner id of the site',
+    example: '66fa3cf3edb76dda1b355941',
+  })
+  readonly userId: string
+
+  @IsString()
+  @ApiProperty({
     description: 'The name of the site',
     example: 'Google',
   })

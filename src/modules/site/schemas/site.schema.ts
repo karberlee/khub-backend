@@ -2,6 +2,7 @@ import { Schema, Document } from 'mongoose'
 
 export const SiteSchema = new Schema<Site>(
   {
+    userId: { type: String, required: true },
     siteName: { type: String, required: true },
     siteLink: { type: String },
     account: { type: String, required: true },
@@ -15,6 +16,7 @@ export const SiteSchema = new Schema<Site>(
 )
 
 export interface Site extends Document {
+  userId: string
   siteName: string
   siteLink: string
   account: string
