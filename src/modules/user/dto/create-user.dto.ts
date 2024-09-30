@@ -17,6 +17,7 @@ export class CreateUserDto {
   })
   readonly password: string
 
+  @IsOptional()
   @IsString()
   @ApiPropertyOptional({
     description: 'The name of the user',
