@@ -19,6 +19,13 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   })
   readonly password?: string
 
+  @IsString()
+  @ApiPropertyOptional({
+    description: 'The name of the user',
+    example: 'name',
+  })
+  readonly name?: string
+
   @Type(() => Number)  // 确保转换为数字
   @IsInt()
   @ApiPropertyOptional({

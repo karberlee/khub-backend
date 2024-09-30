@@ -17,6 +17,13 @@ export class CreateUserDto {
   })
   readonly password: string
 
+  @IsString()
+  @ApiPropertyOptional({
+    description: 'The name of the user',
+    example: 'name',
+  })
+  name?: string
+
   @IsOptional() // 指示 role 是可选的
   @Type(() => Number)  // 确保转换为数字
   @IsInt()

@@ -23,6 +23,20 @@ export class AuthController {
     return this.authService.login(authDto)
   }
 
+  @Post('register')
+  @UseInterceptors(TokenInterceptor)
+  @ApiOperation({ summary: 'Register User' })
+  @ApiBody({
+    description: 'The user info to register',
+    type: CreateUserDto,
+  })
+  @ApiResponse({ status: 201, description: 'Successful response' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
+  register(@Body() registerDto: CreateUserDto) {
+    return this.authService.register(registerDto)
+  }
+
   // @Post()
   // create(@Body() createAuthDto: CreateUserDto) {
   //   return this.authService.create(createAuthDto)

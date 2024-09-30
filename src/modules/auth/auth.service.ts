@@ -20,8 +20,26 @@ export class AuthService {
       return $.util.successRes(0, { 
         _id: user._id,
         account: user.account,
+        name: user.name,
         role: user.role
-       })
+      })
+    } catch (error) {
+      $.logger.error("error:", error)
+      throw new InternalServerErrorException(error)
+    }
+  }
+
+  async register(registerDto: CreateUserDto) {
+    try {
+      registerDto.role = 1
+      if (!registerDto.name) registerDto.name = 'New User'
+      const user = await this.userModel.create(registerDto)
+      return $.util.successRes(0, { 
+        _id: user._id,
+        account: user.account,
+        name: user.name,
+        role: user.role
+      })
     } catch (error) {
       $.logger.error("error:", error)
       throw new InternalServerErrorException(error)

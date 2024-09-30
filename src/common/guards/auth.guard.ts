@@ -5,6 +5,7 @@ import { JWT } from '@/common/utils/jwt'
 export class AuthGuard implements CanActivate {
   private readonly authApiList: String[] = [
     '/auth/login',
+    '/auth/register'
   ]
 
   canActivate(context: ExecutionContext): boolean {

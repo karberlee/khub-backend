@@ -12,6 +12,7 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     try {
       createUserDto.role = 1
+      if (!createUserDto.name) createUserDto.name = 'New User'
       const res = await this.userModel.create(createUserDto)
       return $.util.successRes(0, res)
     } catch (error) {

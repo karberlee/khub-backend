@@ -4,6 +4,7 @@ export const UserSchema = new Schema<User>(
   {
     account: { type: String, required: true },
     password: { type: String, required: true },
+    name: { type: String, required: false },
     role: { type: Number, required: true }
   }, 
   { 
@@ -15,5 +16,6 @@ export const UserSchema = new Schema<User>(
 export interface User extends Document {
   account: string
   password: string
+  name: string
   role: number
 }
