@@ -4,13 +4,15 @@ import { Model } from 'mongoose'
 import { Site } from './schemas/site.schema'
 import { CreateSiteDto } from './dto/create-site.dto'
 import { UpdateSiteDto } from './dto/update-site.dto'
+import { ReqUserDto } from '@/modules/user/dto/req-user.dto'
 
 @Injectable()
 export class SiteService {
   constructor(@InjectModel('Site') private readonly siteModel: Model<Site>) { }
 
-  async create(createSiteDto: CreateSiteDto) {
+  async create(user: ReqUserDto, createSiteDto: CreateSiteDto) {
     try {
+      createSiteDto.userId = user._id
       const res = await this.siteModel.create(createSiteDto)
       return $.util.successRes(0, res)
     } catch (error) {
@@ -19,9 +21,13 @@ export class SiteService {
     }
   }
 
-  async findAll() {
+  async findAll(user: ReqUserDto) {
     try {
-      const res = await this.siteModel.find()
+      const selector: object = {}
+      if (user && user.role > 0) {
+        selector['userId'] = user._id
+      }
+      const res = await this.siteModel.find(selector)
       return $.util.successRes(0, res)
     } catch (error) {
       $.logger.error("error:", error)
@@ -29,9 +35,9 @@ export class SiteService {
     }
   }
 
-  async findOne(id: string) {
+  async findOne(user: ReqUserDto, id: string) {
     try {
-      const site = await this.siteModel.findOne({ _id: id })
+      const site = await this.siteModel.findOne({ _id: id, userId: user._id })
       if (!site) {
         return $.util.failRes(404, `Site with ID ${id} not exist!`)
       }
@@ -42,9 +48,9 @@ export class SiteService {
     }
   }
 
-  async update(id: string, updateSiteDto: UpdateSiteDto) {
+  async update(user: ReqUserDto, id: string, updateSiteDto: UpdateSiteDto) {
     try {
-      const site = await this.siteModel.findById(id)
+      const site = await this.siteModel.findOne({ _id: id, userId: user._id })
       if (!site) {
         return $.util.failRes(404, `Site with ID ${id} not exist!`)
       }
@@ -57,12 +63,13 @@ export class SiteService {
     }
   }
 
-  async remove(id: string) {
+  async remove(user: ReqUserDto, id: string) {
     try {
-      const res = await this.siteModel.findByIdAndDelete(id)
-      if (!res) {
+      const site = await this.siteModel.findOne({ _id: id, userId: user._id })
+      if (!site) {
         return $.util.failRes(404, `Site with ID ${id} not exist!`)
       }
+      const res = await this.siteModel.findByIdAndDelete(site._id)
       return $.util.successRes(0, res)
     } catch (error) {
       $.logger.error("error:", error)

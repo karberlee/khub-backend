@@ -10,7 +10,7 @@ export class AuthService {
 
   async login(authDto: CreateUserDto) {
     try {
-      const user = await this.userModel.findOne({ account: authDto.account })
+      const user = await this.userModel.findOne({ account: authDto.account.trim().toLowerCase() })
       if (!user) {
         return $.util.failRes(404, `User with account ${authDto.account} not exist!`)
       }
@@ -32,6 +32,7 @@ export class AuthService {
   async register(registerDto: CreateUserDto) {
     try {
       registerDto.role = 1
+      registerDto.account = registerDto.account.trim().toLowerCase()
       if (!registerDto.name) registerDto.name = 'New User'
       const user = await this.userModel.create(registerDto)
       return $.util.successRes(0, { 

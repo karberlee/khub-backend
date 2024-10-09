@@ -1,13 +1,14 @@
-import { IsString } from 'class-validator'
-import { ApiProperty } from '@nestjs/swagger'
+import { IsString, IsOptional } from 'class-validator'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 export class CreateSiteDto {
+  @IsOptional()
   @IsString()
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'The owner id of the site',
     example: '66fa3cf3edb76dda1b355941',
   })
-  readonly userId: string
+  userId?: string
 
   @IsString()
   @ApiProperty({

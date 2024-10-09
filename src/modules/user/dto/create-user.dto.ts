@@ -8,7 +8,7 @@ export class CreateUserDto {
     description: 'The account of the user',
     example: 'account',
   })
-  readonly account: string
+  account: string
 
   @IsString()
   @ApiProperty({
