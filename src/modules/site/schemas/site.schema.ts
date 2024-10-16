@@ -4,10 +4,10 @@ export const SiteSchema = new Schema<Site>(
   {
     userId: { type: String, required: true },
     siteName: { type: String, required: true },
-    siteLink: { type: String },
-    account: { type: String, required: true },
-    password: { type: String, required: true },
-    description: { type: String }
+    siteLink: { type: String, default: '' },
+    account: { type: String, default: '' },
+    password: { type: String, default: '' },
+    description: { type: String, default: '' }
   }, 
   { 
     optimisticConcurrency: true, // 开启__v自增

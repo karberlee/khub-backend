@@ -17,29 +17,33 @@ export class CreateSiteDto {
   })
   readonly siteName: string
 
+  @IsOptional()
   @IsString()
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'The link of the site',
     example: 'https://google.com',
   })
   readonly siteLink: string
 
+  @IsOptional()
   @IsString()
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'The account of the site',
     example: 'email@example.com',
   })
   readonly account: string
 
+  @IsOptional()
   @IsString()
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'The password of the site account',
     example: 'password',
   })
   readonly password: string
 
+  @IsOptional()
   @IsString()
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'The description of the site',
     example: 'site description',
   })
