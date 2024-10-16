@@ -12,6 +12,7 @@ import { HealthModule } from '@/modules/health/health.module'
 import { AuthModule } from '@/modules/auth/auth.module'
 import { UserModule } from '@/modules/user/user.module'
 import { SiteModule } from '@/modules/site/site.module'
+import { NoteModule } from '@/modules/note/note.module'
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { SiteModule } from '@/modules/site/site.module'
     HealthModule,
     AuthModule,
     UserModule,
-    SiteModule
+    SiteModule,
+    NoteModule,
   ],
   controllers: [AppController],
   providers: [
