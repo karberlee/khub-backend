@@ -33,7 +33,8 @@ export class NoteController {
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   findAll(@Req() req: Request) {
     const user = req['user'] as ReqUserDto
-    return this.noteService.findAll(user)
+    const query = req.query
+    return this.noteService.findAll(user, query)
   }
 
   @Get(':id')

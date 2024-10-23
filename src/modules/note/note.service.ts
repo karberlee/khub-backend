@@ -24,13 +24,27 @@ export class NoteService {
     }
   }
 
-  async findAll(user: ReqUserDto) {
+  async findAll(user: ReqUserDto, query: any) {
     try {
       const selector: object = {}
       if (user && user.role > 0) {
         selector['userId'] = user._id
       }
-      const res = await this.noteModel.find(selector)
+      if (query && query.search) {
+        // 使用正则表达式实现模糊查询
+        selector['$or'] = [
+          { title: { $regex: query.search, $options: 'i' } },
+          { content: { $regex: query.search, $options: 'i' } }
+        ] // 'i' 表示不区分大小写
+      }
+      if (query && query.level > -1) {
+        selector['level'] = query.level
+      }
+      const res = await this.noteModel.find(
+        selector,
+        null,
+        { sort: { updateTime: -1 } }
+      )
       return $.util.successRes(0, res)
     } catch (error) {
       $.logger.error("error:", error)
