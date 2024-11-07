@@ -23,18 +23,18 @@ export class AuthController {
     return this.authService.login(authDto)
   }
 
-  @Post('register')
+  @Post('signup')
   @UseInterceptors(TokenInterceptor)
-  @ApiOperation({ summary: 'Register User' })
+  @ApiOperation({ summary: 'Sign up User' })
   @ApiBody({
-    description: 'The user info to register',
+    description: 'The user info to signup',
     type: CreateUserDto,
   })
   @ApiResponse({ status: 201, description: 'Successful response' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  register(@Body() registerDto: CreateUserDto) {
-    return this.authService.register(registerDto)
+  signup(@Body() signupDto: CreateUserDto) {
+    return this.authService.signup(signupDto)
   }
 
   // @Post()

@@ -29,12 +29,12 @@ export class AuthService {
     }
   }
 
-  async register(registerDto: CreateUserDto) {
+  async signup(signupDto: CreateUserDto) {
     try {
-      registerDto.role = 1
-      registerDto.account = registerDto.account.trim().toLowerCase()
-      if (!registerDto.name) registerDto.name = 'New User'
-      const user = await this.userModel.create(registerDto)
+      signupDto.role = 1
+      signupDto.account = signupDto.account.trim().toLowerCase()
+      if (!signupDto.name) signupDto.name = 'New User'
+      const user = await this.userModel.create(signupDto)
       return $.util.successRes(0, { 
         _id: user._id,
         account: user.account,
