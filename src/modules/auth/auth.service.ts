@@ -52,6 +52,7 @@ export class AuthService {
     try {
       const verifyCode = $.util.generateVerifyCode(6)
       $.logger.info('verifyCode:', verifyCode)
+      $.CodeCache.set(email, verifyCode)
       const htmlTemplate = mailTemplates.verifyCodeTemplate(verifyCode)
       $.MailTool.sendMail(email, 'KHub Verify Code', null, htmlTemplate)
       return $.util.successRes(0, { message: 'Verify code is sent!' })

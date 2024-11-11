@@ -33,7 +33,6 @@ export const verifyCodeTemplate = (verifyCode: string) => {
           style="
             padding: 16px 32px;
             color: #131a26;
-            /* font-weight: 700; */
           "
         >
           <div>We have received your application to sign up on our website.If it is not you, please ignore this email.</div>
@@ -56,10 +55,17 @@ export const verifyCodeTemplate = (verifyCode: string) => {
         >
           ${verifyCode}
         </div>
+        <div
+          style="
+            padding: 16px 32px;
+            font-weight: 700;
+            color: #ff002b;
+          "
+        >
+          <div>Available within five minutes.</div>
+        </div>
         <div 
           style="
-            /* font-weight: 700; */
-            /* text-align: center; */
             background-color: #131a26;
             color: #e7e7e7;
             height: 32px;

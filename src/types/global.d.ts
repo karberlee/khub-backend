@@ -6,5 +6,6 @@ declare global {
     logger: typeof logger
     util: typeof utilType
     MailTool
+    CodeCache
   }
 }
