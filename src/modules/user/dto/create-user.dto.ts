@@ -33,4 +33,12 @@ export class CreateUserDto {
     example: 1,
   })
   role?: number
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional({
+    description: 'The verify code to sign up',
+    example: '123456',
+  })
+  readonly verifyCode?: string
 }

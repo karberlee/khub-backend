@@ -32,10 +32,18 @@ export class AuthService {
 
   async signup(signupDto: CreateUserDto) {
     try {
+      if (
+        !signupDto.verifyCode || 
+        !$.CodeCache.get(signupDto.account) || 
+        $.CodeCache.get(signupDto.account) !== signupDto.verifyCode
+      ) {
+        return $.util.failRes(400, `Bad Verify Code!`)
+      }
       signupDto.role = 1
       signupDto.account = signupDto.account.trim().toLowerCase()
       if (!signupDto.name) signupDto.name = 'New User'
       const user = await this.userModel.create(signupDto)
+      $.CodeCache.del(signupDto.account)
       return $.util.successRes(0, { 
         _id: user._id,
         account: user.account,
