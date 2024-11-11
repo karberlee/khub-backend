@@ -6,6 +6,7 @@ export class AuthGuard implements CanActivate {
   private readonly authApiList: String[] = [
     '/auth/login',
     '/auth/signup',
+    '/auth/sendCode',
     '/prometheus/metrics',
     '/health',
   ]

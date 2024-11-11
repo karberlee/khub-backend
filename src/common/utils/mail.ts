@@ -44,13 +44,14 @@ const transporter = nodemailer.createTransport({
 // })
 
 export const MailTool = {
-  async sendMail(to: string, subject: string, text: string): Promise<void> {
+  async sendMail(to: string, subject: string, text: string, html: string): Promise<void> {
     try {
       const options: MailOptions = {
         from: process.env.SMTP_USER,
         to,
         subject,
-        text
+        text,
+        html
       }
       $.logger.info('Email Content:', options)
       const info = await transporter.sendMail(options)

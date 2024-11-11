@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { User } from '@/modules/user/schemas/user.schema'
 import { CreateUserDto } from '@/modules/user/dto/create-user.dto'
+import * as mailTemplates from "@/common/utils/mailTemplates";
 
 @Injectable()
 export class AuthService {
@@ -41,6 +42,19 @@ export class AuthService {
         name: user.name,
         role: user.role
       })
+    } catch (error) {
+      $.logger.error("error:", error)
+      throw new InternalServerErrorException(error)
+    }
+  }
+
+  async sendCode(email: string) {
+    try {
+      const verifyCode = $.util.generateVerifyCode(6)
+      $.logger.info('verifyCode:', verifyCode)
+      const htmlTemplate = mailTemplates.verifyCodeTemplate(verifyCode)
+      $.MailTool.sendMail(email, 'KHub Verify Code', null, htmlTemplate)
+      return $.util.successRes(0, { message: 'Verify code is sent!' })
     } catch (error) {
       $.logger.error("error:", error)
       throw new InternalServerErrorException(error)

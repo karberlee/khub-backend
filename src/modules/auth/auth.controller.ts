@@ -24,7 +24,6 @@ export class AuthController {
   }
 
   @Post('signup')
-  @UseInterceptors(TokenInterceptor)
   @ApiOperation({ summary: 'Sign up User' })
   @ApiBody({
     description: 'The user info to signup',
@@ -35,6 +34,20 @@ export class AuthController {
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   signup(@Body() signupDto: CreateUserDto) {
     return this.authService.signup(signupDto)
+  }
+
+  @Post('sendCode')
+  @ApiOperation({ summary: 'Send sign up verify code' })
+  @ApiBody({
+    description: 'The user email to signup',
+    type: Object,
+  })
+  @ApiResponse({ status: 201, description: 'Successful response' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
+  sendCode(@Body() body: any) {
+    const email = body.email
+    return this.authService.sendCode(email)
   }
 
   // @Post()
