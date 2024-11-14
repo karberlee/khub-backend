@@ -12,6 +12,8 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     try {
       createUserDto.role = 1
+      createUserDto.createTime = new Date().toISOString()
+      createUserDto.account = createUserDto.account.trim().toLowerCase()
       if (!createUserDto.name) createUserDto.name = 'New User'
       const res = await this.userModel.create(createUserDto)
       return $.util.successRes(0, res)

@@ -5,7 +5,8 @@ export const UserSchema = new Schema<User>(
     account: { type: String, required: true },
     password: { type: String, required: true },
     name: { type: String, required: false },
-    role: { type: Number, required: true }
+    role: { type: Number, required: true },
+    createTime: { type: String, required: true },
   }, 
   { 
     optimisticConcurrency: true, // 开启__v自增
@@ -18,4 +19,5 @@ export interface User extends Document {
   password: string
   name: string
   role: number
+  createTime: string
 }

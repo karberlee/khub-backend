@@ -37,6 +37,14 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   @ApiPropertyOptional({
+    description: 'The create time of the user',
+    example: '2000-01-01 09:00',
+  })
+  createTime?: string
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional({
     description: 'The verify code to sign up',
     example: '123456',
   })

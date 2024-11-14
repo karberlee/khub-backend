@@ -40,6 +40,7 @@ export class AuthService {
         return $.util.failRes(400, `Bad Verify Code!`)
       }
       signupDto.role = 1
+      signupDto.createTime = new Date().toISOString()
       signupDto.account = signupDto.account.trim().toLowerCase()
       if (!signupDto.name) signupDto.name = 'New User'
       const user = await this.userModel.create(signupDto)
