@@ -13,6 +13,7 @@ import { AuthModule } from '@/modules/auth/auth.module'
 import { UserModule } from '@/modules/user/user.module'
 import { SiteModule } from '@/modules/site/site.module'
 import { NoteModule } from '@/modules/note/note.module'
+import { DocModule } from '@/modules/doc/doc.module'
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { NoteModule } from '@/modules/note/note.module'
     UserModule,
     SiteModule,
     NoteModule,
+    DocModule,
   ],
   controllers: [AppController],
   providers: [
