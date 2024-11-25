@@ -26,8 +26,13 @@ export class DocController {
   }
 
   @Get()
-  findAll() {
-    return this.docService.findAll();
+  @ApiOperation({ summary: 'Find all doc' })
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
+  findAll(@Req() req: Request) {
+    const user = req['user'] as ReqUserDto
+    return this.docService.findAll(user)
   }
 
   @Get(':id')

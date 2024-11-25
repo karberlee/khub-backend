@@ -24,8 +24,15 @@ export class DocService {
     }
   }
 
-  findAll() {
-    return `This action returns all doc`;
+  async findAll(user: ReqUserDto) {
+    try {
+      const selector: object = {}
+      const res = await this.docModel.find(selector)
+      return $.util.successRes(0, res)
+    } catch (error) {
+      $.logger.error("error:", error)
+      throw new InternalServerErrorException(error)
+    }
   }
 
   async findOne(user: ReqUserDto, id: string) {
