@@ -9,7 +9,7 @@ export class CreateDocDto {
     description: 'The owner id of the doc',
     example: '66fa3cf3edb76dda1b355941',
   })
-  userId?: string
+  owner?: string
 
   @IsString()
   @ApiProperty({

@@ -1,8 +1,10 @@
 import { Schema, Document } from 'mongoose'
+import { User } from "@/modules/user/schemas/user.schema";
 
 export const DocSchema = new Schema<Doc>(
   {
-    userId: { type: String, required: true },
+    // userId: { type: String, required: true },
+    owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     title: { type: String, default: '', required: true },
     tags: { type: [String], default: [] },
     content: { type: String, default: '' },
@@ -17,7 +19,8 @@ export const DocSchema = new Schema<Doc>(
 )
 
 export interface Doc extends Document {
-  userId: string
+  // userId: string
+  owner: User['_id']
   title: string
   tags: string[]
   content: string

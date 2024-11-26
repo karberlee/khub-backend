@@ -62,7 +62,13 @@ export class DocController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.docService.remove(+id);
+  @ApiOperation({ summary: 'Delete doc by ID' })
+  @ApiParam({ name: 'id', description: 'The doc ID', type: String })
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
+  remove(@Req() req: Request, @Param('id', ParseObjectIdPipe) id: string) {
+    const user = req['user'] as ReqUserDto
+    return this.docService.remove(user, id)
   }
 }

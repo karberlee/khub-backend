@@ -9,10 +9,11 @@ import { ReqUserDto } from '@/modules/user/dto/req-user.dto'
 @Injectable()
 export class DocService {
   constructor(@InjectModel('Doc') private readonly docModel: Model<Doc>) { }
+  private readonly ownerPopulateObj = { path: 'owner', select: '_id name createTime' }
 
   async create(user: ReqUserDto, createDocDto: CreateDocDto) {
     try {
-      createDocDto.userId = user._id
+      createDocDto.owner = user._id
       const currentTime = new Date().toISOString()
       createDocDto.createTime = currentTime
       createDocDto.updateTime = currentTime
@@ -27,7 +28,7 @@ export class DocService {
   async findAll(user: ReqUserDto) {
     try {
       const selector: object = {}
-      const res = await this.docModel.find(selector)
+      const res = await this.docModel.find(selector).populate(this.ownerPopulateObj)
       return $.util.successRes(0, res)
     } catch (error) {
       $.logger.error("error:", error)
@@ -37,7 +38,7 @@ export class DocService {
 
   async findOne(user: ReqUserDto, id: string) {
     try {
-      const doc = await this.docModel.findOne({ _id: id })
+      const doc = await (await this.docModel.findOne({ _id: id })).populate(this.ownerPopulateObj)
       if (!doc) {
         return $.util.failRes(404, `Doc with ID ${id} not exist!`)
       }
@@ -50,11 +51,11 @@ export class DocService {
 
   async update(user: ReqUserDto, id: string, updateDocDto: UpdateDocDto) {
     try {
-      const doc = await this.docModel.findOne({ _id: id })
+      const doc = await (await this.docModel.findOne({ _id: id })).populate(this.ownerPopulateObj)
       if (!doc) {
         return $.util.failRes(404, `Doc with ID ${id} not exist!`)
       }
-      if (doc.userId !== user._id) {
+      if (doc.owner['_id'] !== user._id) {
         return $.util.failRes(403, `Forbidden! You are not the owner with doc ${id}!`)
       }
       Object.assign(doc, updateDocDto)
@@ -67,7 +68,20 @@ export class DocService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} doc`;
+  async remove(user: ReqUserDto, id: string) {
+    try {
+      const doc = await this.docModel.findOne({ _id: id }).populate(this.ownerPopulateObj)
+      if (!doc) {
+        return $.util.failRes(404, `Doc with ID ${id} not exist!`)
+      }
+      if (doc.owner['_id'] !== user._id) {
+        return $.util.failRes(403, `Forbidden! You are not the owner with doc ${id}!`)
+      }
+      const res = await this.docModel.findByIdAndDelete(doc._id)
+      return $.util.successRes(0, res)
+    } catch (error) {
+      $.logger.error("error:", error)
+      throw new InternalServerErrorException(error)
+    }
   }
 }
