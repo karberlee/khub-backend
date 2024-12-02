@@ -55,7 +55,7 @@ export class DocService {
       if (!doc) {
         return $.util.failRes(404, `Doc with ID ${id} not exist!`)
       }
-      if (doc.owner['_id'] !== user._id) {
+      if (doc.owner['_id'] != user._id) {
         return $.util.failRes(403, `Forbidden! You are not the owner with doc ${id}!`)
       }
       Object.assign(doc, updateDocDto)
@@ -74,7 +74,7 @@ export class DocService {
       if (!doc) {
         return $.util.failRes(404, `Doc with ID ${id} not exist!`)
       }
-      if (doc.owner['_id'] !== user._id) {
+      if (doc.owner['_id'] != user._id) {
         return $.util.failRes(403, `Forbidden! You are not the owner with doc ${id}!`)
       }
       const res = await this.docModel.findByIdAndDelete(doc._id)
