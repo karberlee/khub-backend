@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger'
 import { ParseObjectIdPipe } from '@/common/pipes/parse-object-id.pipe'
+import { Request } from 'express'
 import { DocService } from './doc.service'
 import { CreateDocDto } from './dto/create-doc.dto'
 import { UpdateDocDto } from './dto/update-doc.dto'
@@ -32,7 +33,19 @@ export class DocController {
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   findAll(@Req() req: Request) {
     const user = req['user'] as ReqUserDto
-    return this.docService.findAll(user)
+    const query = req.query
+    return this.docService.findAll(user, query)
+  }
+
+  @Get('mine')
+  @ApiOperation({ summary: 'Find docs of mine' })
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
+  findMine(@Req() req: Request) {
+    const user = req['user'] as ReqUserDto
+    const query = req.query
+    return this.docService.findMine(user, query)
   }
 
   @Get(':id')

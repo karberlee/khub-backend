@@ -25,9 +25,26 @@ export class DocService {
     }
   }
 
-  async findAll(user: ReqUserDto) {
+  async findAll(user: ReqUserDto, query: any) {
     try {
-      const selector: object = {}
+      const selector: object = { public: true }
+      if (query && query.owner) {
+        selector['owner'] = query.owner
+      }
+      const res = await this.docModel.find(selector).populate(this.ownerPopulateObj)
+      return $.util.successRes(0, res)
+    } catch (error) {
+      $.logger.error("error:", error)
+      throw new InternalServerErrorException(error)
+    }
+  }
+
+  async findMine(user: ReqUserDto, query: any) {
+    try {
+      const selector: object = { public: true }
+      if (query && query.hasOwnProperty('public')) {
+        selector['public'] = query.public
+      }
       const res = await this.docModel.find(selector).populate(this.ownerPopulateObj)
       return $.util.successRes(0, res)
     } catch (error) {
