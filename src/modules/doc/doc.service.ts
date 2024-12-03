@@ -38,7 +38,7 @@ export class DocService {
 
   async findOne(user: ReqUserDto, id: string) {
     try {
-      const doc = await (await this.docModel.findOne({ _id: id })).populate(this.ownerPopulateObj)
+      const doc = await this.docModel.findOne({ _id: id }).populate(this.ownerPopulateObj)
       if (!doc) {
         return $.util.failRes(404, `Doc with ID ${id} not exist!`)
       }
@@ -51,7 +51,7 @@ export class DocService {
 
   async update(user: ReqUserDto, id: string, updateDocDto: UpdateDocDto) {
     try {
-      const doc = await (await this.docModel.findOne({ _id: id })).populate(this.ownerPopulateObj)
+      const doc = await this.docModel.findOne({ _id: id }).populate(this.ownerPopulateObj)
       if (!doc) {
         return $.util.failRes(404, `Doc with ID ${id} not exist!`)
       }
