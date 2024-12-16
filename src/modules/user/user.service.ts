@@ -8,6 +8,19 @@ import { UpdateUserDto } from './dto/update-user.dto'
 @Injectable()
 export class UserService {
   constructor(@InjectModel('User') private readonly userModel: Model<User>) { }
+  
+  async reload(id: string) {
+    try {
+      const user = await this.userModel.findOne({ _id: id }).select('-password -__v')
+      if (!user) {
+        return $.util.failRes(404, `User with ID ${id} not exist!`)
+      }
+      return $.util.successRes(0, user)
+    } catch (error) {
+      $.logger.error("error:", error)
+      throw new InternalServerErrorException(error)
+    }
+  }
 
   async create(createUserDto: CreateUserDto) {
     try {

@@ -1,14 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger'
 import { ParseObjectIdPipe } from '@/common/pipes/parse-object-id.pipe'
+import { Request } from 'express'
 import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
+import { ReqUserDto } from '@/modules/user/dto/req-user.dto'
 
 @ApiTags('User')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Get('reload')
+  @ApiOperation({ summary: 'Load user info by token' })
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
+  reload(@Req() req: Request) {
+    const user = req['user'] as ReqUserDto
+    return this.userService.reload(user._id)
+  }
 
   @Post()
   @ApiOperation({ summary: 'Create user' })
