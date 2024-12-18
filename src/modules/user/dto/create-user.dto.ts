@@ -25,6 +25,14 @@ export class CreateUserDto {
   })
   name?: string
 
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional({
+    description: 'The avatar of the user',
+    example: 'https://xxx.com/user/avatar/xxx.jpg',
+  })
+  avatar?: string
+
   @IsOptional() // 指示 role 是可选的
   @Type(() => Number)  // 确保转换为数字
   @IsInt()
@@ -33,6 +41,14 @@ export class CreateUserDto {
     example: 1,
   })
   role?: number
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional({
+    description: 'The type of the account',
+    example: 'email_signup',
+  })
+  type?: string
 
   @IsOptional()
   @IsString()

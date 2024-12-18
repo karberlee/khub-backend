@@ -5,7 +5,9 @@ export const UserSchema = new Schema<User>(
     account: { type: String, required: true },
     password: { type: String, required: true },
     name: { type: String, required: false },
+    avatar: { type: String, required: false },
     role: { type: Number, required: true },
+    type: { type: String, required: true },
     createTime: { type: String, required: true },
   }, 
   { 
@@ -18,6 +20,8 @@ export interface User extends Document {
   account: string
   password: string
   name: string
+  avatar: string
   role: number
+  type: string
   createTime: string
 }

@@ -20,7 +20,7 @@ export class TokenInterceptor implements NestInterceptor {
         const user = data.body
         if (user) {
           const token = JWT.generateToken(
-            { _id: user._id, account: user.account, role: user.role },
+            { _id: user._id, account: user.account, type: user.type, role: user.role },
             { expiresIn: this.JWT_EXPIRES }
           )
           response.setHeader('Authorization', `Bearer ${token}`)

@@ -7,5 +7,6 @@ declare global {
     util: typeof utilType
     MailTool
     CodeCache
+    axios
   }
 }

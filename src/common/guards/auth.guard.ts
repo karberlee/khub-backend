@@ -7,6 +7,7 @@ export class AuthGuard implements CanActivate {
     '/auth/login',
     '/auth/signup',
     '/auth/sendCode',
+    '/auth/github/callback',
     '/prometheus/metrics',
     '/health',
   ]
@@ -16,7 +17,7 @@ export class AuthGuard implements CanActivate {
     const url = request.url
     
     // 忽略 login 请求
-    if (this.authApiList.indexOf(url) > -1) return true
+    if (url.startsWith('/auth') || this.authApiList.indexOf(url) > -1) return true
 
     const token = request.headers['authorization']?.split(' ')[1] // 获取 Bearer token
 

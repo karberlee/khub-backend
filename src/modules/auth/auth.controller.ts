@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors } from '@nestjs/common'
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, Req } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger'
+import { Request } from 'express'
 import { AuthService } from './auth.service'
 import { CreateUserDto } from '@/modules/user/dto/create-user.dto'
 import { TokenInterceptor } from "@/common/interceptors/token.interceptor";
@@ -48,6 +49,13 @@ export class AuthController {
   sendCode(@Body() body: any) {
     const email = body.email
     return this.authService.sendCode(email)
+  }
+
+  @Get('github/callback')
+  @UseInterceptors(TokenInterceptor)
+  githubCallback(@Req() req: Request) {
+    const query = req.query
+    return this.authService.githubCallback(query)
   }
 
   // @Post()

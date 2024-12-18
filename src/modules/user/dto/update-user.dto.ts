@@ -26,6 +26,13 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   })
   readonly name?: string
 
+  @IsString()
+  @ApiPropertyOptional({
+    description: 'The avatar of the user',
+    example: 'https://xxx.com/user/avatar/xxx.jpg',
+  })
+  readonly avatar?: string
+
   @Type(() => Number)  // 确保转换为数字
   @IsInt()
   @ApiPropertyOptional({
