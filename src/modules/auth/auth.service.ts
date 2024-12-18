@@ -126,12 +126,11 @@ export class AuthService {
       let githubUser = await this.userModel.findOne({ account: userInfo.id, type: this.github_account_type })
 
       // 5.create user account if not exist
-      $.logger.info('githubUser:', githubUser)
       if (!githubUser) {
         const newUser: CreateUserDto = {
           account: userInfo.id,
           password: userInfo.login,
-          name: userInfo.name,
+          name: userInfo.name || userInfo.login || 'New User',
           avatar: userInfo.avatar_url,
           role: 1,
           type: this.github_account_type,
