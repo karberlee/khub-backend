@@ -103,7 +103,7 @@ export class AuthService {
           headers: {
             'Accept': 'application/json' // 确保返回的是 JSON 格式
           },
-          timeout: 10000 // 设置10秒超时
+          timeout: 30000 // 设置30秒超时
         }
       )
       const githubTokenObj = tokenRes.data
