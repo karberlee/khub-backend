@@ -22,6 +22,16 @@ export class UserController {
     return this.userService.reload(user._id)
   }
 
+  @Get('statistics')
+  @ApiOperation({ summary: 'Get user data statistics' })
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
+  statistics(@Req() req: Request) {
+    const user = req['user'] as ReqUserDto
+    return this.userService.statistics(user._id)
+  }
+
   @Post()
   @ApiOperation({ summary: 'Create user' })
   @ApiBody({
