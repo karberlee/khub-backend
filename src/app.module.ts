@@ -21,7 +21,7 @@ import { DocModule } from '@/modules/doc/doc.module'
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, '..', 'public'), // 设置静态文件服务目录
+      rootPath: path.join(__dirname, process.env.NODE_ENV==='prod' ? '' : '..', 'public'), // 设置静态文件服务目录
       serveRoot: '/public/', // 文件在服务器上的访问路径
     }),
     MongooseModule.forRoot(process.env.MONGO_URI), 
