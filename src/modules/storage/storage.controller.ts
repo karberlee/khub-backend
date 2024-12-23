@@ -26,7 +26,7 @@ export class StorageController {
         }
       },
       limits: {
-        fileSize: 1024 * 1024 * 5, // 限制文件大小（5MB）
+        fileSize: 1024 * 1024 * 20, // 限制文件大小（20MB）
       },
     }),
   )
