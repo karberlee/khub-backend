@@ -25,12 +25,26 @@ export class DocService {
     }
   }
 
-  async findAll(user: ReqUserDto, query: any) {
+  async findAll(user: ReqUserDto, query: any = {}) {
     try {
       const selector: object = { public: true }
-      if (query && query.owner) {
-        selector['owner'] = query.owner
+
+      if (query && query.manage) {
+        selector['owner'] = user._id
       }
+      delete query.manage
+
+      if (query && query.search) {
+        // 使用正则表达式实现模糊查询
+        selector['$or'] = [
+          { title: { $regex: query.search, $options: 'i' } },
+          { content: { $regex: query.search, $options: 'i' } },
+          { tags: { $regex: query.search, $options: 'i' } },
+        ] // 'i' 表示不区分大小写
+      }
+      delete query.search
+
+      Object.assign(selector, query)
       const res = await this.docModel.find(selector).populate(this.ownerPopulateObj)
       return $.util.successRes(0, res)
     } catch (error) {
