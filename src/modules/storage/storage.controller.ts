@@ -1,17 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common'
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Req } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
+import * as fs from 'fs'
+import * as path from 'path'
 import { StorageService } from './storage.service'
+import { ReqUserDto } from '@/modules/user/dto/req-user.dto'
 
 @Controller('storage')
 export class StorageController {
   constructor(private readonly storageService: StorageService) {}
 
-  @Post('upload/image')
+  @Post('upload/image/:type')
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './public/images', // 文件存储目录
+        // destination: './public/images', // 文件存储目录
+        destination: (req, file, cb) => {
+          // 使用参数 type 来指定上传目录
+          const user = req['user'] as ReqUserDto
+          const uploadPath = `./public/images/${user._id}/${req.params.type}` // 例如 ./public/images/<user_id>/avatars 或 ./public/images/<user_id>/thumbnails
+          
+          // 创建目录（如果不存在）
+          const fullPath = path.resolve(uploadPath)
+          
+          if (!fs.existsSync(fullPath)) {
+            fs.mkdirSync(fullPath, { recursive: true })
+          }
+
+          // 设置文件存储目录
+          cb(null, fullPath)
+        },
         filename: (req, file, cb) => {
           const filename = `${Date.now()}-${file.originalname}`
           cb(null, filename)
@@ -30,10 +48,12 @@ export class StorageController {
       },
     }),
   )
-  uploadImage(@UploadedFile() file: Express.Multer.File) {
+  uploadImage(@Req() req: Request, @Param('type') type: string, @UploadedFile() file: Express.Multer.File) {
     $.logger.info(file)  // 上传的文件信息
+    const user = req['user'] as ReqUserDto
     return $.util.successRes(0, { 
       message: 'File uploaded successfully',
+      path: `public/images/${user._id}/${type}`,
       file: file.filename,
     })
   }
