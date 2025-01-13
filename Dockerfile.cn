@@ -16,12 +16,5 @@ RUN npm install --ignore-scripts
 # expose ports which will be used
 EXPOSE 3000
 
-# create not root user
-RUN addgroup --system nonroot \
-    && adduser --system --ingroup nonroot nonroot
-
-# use not root user
-USER nonroot
-
 # exec start command
 CMD ["node", "app.js"]
