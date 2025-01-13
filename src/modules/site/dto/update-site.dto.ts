@@ -1,4 +1,4 @@
-import { IsString, IsInt } from 'class-validator'
+import { IsString } from 'class-validator'
 import { PartialType } from '@nestjs/mapped-types'
 import { ApiPropertyOptional } from '@nestjs/swagger'
 import { CreateSiteDto } from './create-site.dto'

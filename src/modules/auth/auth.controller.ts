@@ -1,5 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, Req } from '@nestjs/common'
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger'
+import { Controller, Get, Post, Body, UseInterceptors, Req } from '@nestjs/common'
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger'
 import { Request } from 'express'
 import { AuthService } from './auth.service'
 import { CreateUserDto } from '@/modules/user/dto/create-user.dto'

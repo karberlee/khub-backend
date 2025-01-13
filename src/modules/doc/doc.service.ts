@@ -29,12 +29,12 @@ export class DocService {
     try {
       const selector: object = { public: true }
 
-      if (query && query.manage) {
+      if (query?.manage) {
         selector['owner'] = user._id
       }
       delete query.manage
 
-      if (query && query.search) {
+      if (query?.search) {
         // 使用正则表达式实现模糊查询
         selector['$or'] = [
           { title: { $regex: query.search, $options: 'i' } },
@@ -56,7 +56,7 @@ export class DocService {
   async findMine(user: ReqUserDto, query: any) {
     try {
       const selector: object = { public: true }
-      if (query && query.hasOwnProperty('public')) {
+      if (query?.hasOwnProperty('public')) {
         selector['public'] = query.public
       }
       const res = await this.docModel.find(selector).populate(this.ownerPopulateObj)

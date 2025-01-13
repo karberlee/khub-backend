@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Req } from '@nestjs/common'
+import { Controller, Post, Param, UseInterceptors, UploadedFile, Req } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
 import * as fs from 'fs'

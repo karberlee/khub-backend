@@ -30,7 +30,7 @@ export class NoteService {
       if (user && user.role > 0) {
         selector['userId'] = user._id
       }
-      if (query && query.search) {
+      if (query?.search) {
         // 使用正则表达式实现模糊查询
         selector['$or'] = [
           { title: { $regex: query.search, $options: 'i' } },

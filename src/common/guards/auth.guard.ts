@@ -3,7 +3,7 @@ import { JWT } from '@/common/utils/jwt'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  private readonly authApiList: String[] = [
+  private readonly authApiList: string[] = [
     '/auth/login',
     '/auth/signup',
     '/auth/sendCode',

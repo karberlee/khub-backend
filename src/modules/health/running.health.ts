@@ -3,7 +3,7 @@ import { HealthIndicator, HealthIndicatorResult, HealthCheckError } from '@nestj
 
 @Injectable()
 export class RunningHealthIndicator extends HealthIndicator {
-  private isRunning: boolean = true
+  private readonly isRunning: boolean = true
 
   async isHealthy(key: string): Promise<HealthIndicatorResult> {
     const isHealthy = this.isRunning
