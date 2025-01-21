@@ -4,20 +4,20 @@ import { Request, Response } from 'express'
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
-    const ctx = host.switchToHttp()
-    const request = ctx.getRequest<Request>()
-    const response = ctx.getResponse<Response>()
+    const request = host.switchToHttp().getRequest<Request>()
+    const response = host.switchToHttp().getResponse<Response>()
     const status = exception.getStatus()
     const message = exception.message || 'Internal server error'
+    const type = exception.name
 
     response
       .status(status)
       .json({
         code: status,
+        message,
+        type,
         timestamp: new Date().toISOString(),
         path: request.url,
-        message,
-        exception
       })
   }
 }

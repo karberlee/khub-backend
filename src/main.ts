@@ -4,7 +4,6 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import * as dotenv from 'dotenv'
 dotenv.config()
 import '@/shared/global'
-import { AuthGuard } from "@/common/guards/auth.guard";
 import { AppModule } from './app.module'
 
 async function bootstrap() {
@@ -19,9 +18,6 @@ async function bootstrap() {
       'Origin', 'X-Requested-With', 'user_id', 'login_id', 'token', 'app_link'], // 设置服务器支持的所有头信息字段
     exposedHeaders: ['WWW-Authenticate', 'Server-Authorization', 'Authorization'], // 设置获取其他自定义字段
   })
-
-  // 设置全局守卫
-  app.useGlobalGuards(new AuthGuard())
 
   // DTO 处理
   app.useGlobalPipes(new ValidationPipe({

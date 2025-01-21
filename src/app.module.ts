@@ -1,10 +1,11 @@
 import * as path from 'path'
 import { Module, MiddlewareConsumer } from '@nestjs/common'
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
+import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { MongooseModule } from '@nestjs/mongoose'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { AuthGuard } from '@/common/guards/auth.guard'
 import { HttpExceptionFilter } from '@/common/filters/http-exception.filter'
 import { LoggingInterceptor } from '@/common/interceptors/logging.interceptor'
 import { RefreshInterceptor } from '@/common/interceptors/refresh.interceptor'
@@ -38,16 +39,20 @@ import { DocModule } from '@/modules/doc/doc.module'
   providers: [
     AppService,
     {
-      provide: APP_INTERCEPTOR,
-      useClass: LoggingInterceptor,
+      provide: APP_GUARD,
+      useClass: AuthGuard,  // 设置全局守卫
     },
     {
       provide: APP_INTERCEPTOR,
-      useClass: RefreshInterceptor,
+      useClass: LoggingInterceptor, // 设置全局拦截器，处理请求和响应的log
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: RefreshInterceptor, // 设置全局拦截器，处理token刷新
     },
     {
       provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
+      useClass: HttpExceptionFilter,  // 设置全局过滤器，处理全局异常
     },
   ],
 })
