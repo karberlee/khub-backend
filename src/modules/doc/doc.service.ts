@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Doc } from './schemas/doc.schema'
@@ -21,7 +21,7 @@ export class DocService {
       return $.util.successRes(0, res)
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException(error)
+      throw error
     }
   }
 
@@ -49,7 +49,7 @@ export class DocService {
       return $.util.successRes(0, res)
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException(error)
+      throw error
     }
   }
 
@@ -63,7 +63,7 @@ export class DocService {
       return $.util.successRes(0, res)
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException(error)
+      throw error
     }
   }
 
@@ -71,12 +71,15 @@ export class DocService {
     try {
       const doc = await this.docModel.findOne({ _id: id }).populate(this.ownerPopulateObj)
       if (!doc) {
-        return $.util.failRes(404, `Doc with ID ${id} not exist!`)
+        throw new NotFoundException({
+          errType: 1,
+          message: `Doc with ID ${id} not exist!`
+        })
       }
       return $.util.successRes(0, doc)
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException(error)
+      throw error
     }
   }
 
@@ -84,10 +87,16 @@ export class DocService {
     try {
       const doc = await this.docModel.findOne({ _id: id }).populate(this.ownerPopulateObj)
       if (!doc) {
-        return $.util.failRes(404, `Doc with ID ${id} not exist!`)
+        throw new NotFoundException({
+          errType: 1,
+          message: `Doc with ID ${id} not exist!`
+        })
       }
       if (doc.owner['_id'] != user._id) {
-        return $.util.failRes(403, `Forbidden! You are not the owner with doc ${id}!`)
+        throw new ForbiddenException({
+          errType: 1,
+          message: `Forbidden! You are not the owner with doc ${id}!`
+        })
       }
       Object.assign(doc, updateDocDto)
       doc.updateTime = new Date().toISOString()
@@ -95,7 +104,7 @@ export class DocService {
       return $.util.successRes(0, res)
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException(error)
+      throw error
     }
   }
 
@@ -103,16 +112,22 @@ export class DocService {
     try {
       const doc = await this.docModel.findOne({ _id: id }).populate(this.ownerPopulateObj)
       if (!doc) {
-        return $.util.failRes(404, `Doc with ID ${id} not exist!`)
+        throw new NotFoundException({
+          errType: 1,
+          message: `Doc with ID ${id} not exist!`
+        })
       }
       if (doc.owner['_id'] != user._id) {
-        return $.util.failRes(403, `Forbidden! You are not the owner with doc ${id}!`)
+        throw new ForbiddenException({
+          errType: 1,
+          message: `Forbidden! You are not the owner with doc ${id}!`
+        })
       }
       const res = await this.docModel.findByIdAndDelete(doc._id)
       return $.util.successRes(0, res)
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException(error)
+      throw error
     }
   }
 }

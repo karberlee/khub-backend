@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { User } from '@/modules/user/schemas/user.schema'
@@ -16,12 +16,16 @@ export class AuthService {
 
   async login(authDto: CreateUserDto) {
     try {
-      const user = await this.userModel.findOne({ account: authDto.account.trim().toLowerCase(), type: this.signup_account_type })
+      const user = await this.userModel.findOne({
+        account: authDto.account.trim().toLowerCase(),
+        password: authDto.password,
+        type: this.signup_account_type,
+      })
       if (!user) {
-        return $.util.failRes(404, `User with account ${authDto.account} not exist!`)
-      }
-      if (user.password !== authDto.password) {
-        return $.util.failRes(401, `Password Incorrect!`)
+        throw new UnauthorizedException({
+          errType: 1,
+          message: 'Incorrect account or password!'
+        })
       }
       return $.util.successRes(0, { 
         _id: user._id,
@@ -32,7 +36,7 @@ export class AuthService {
       })
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException(error)
+      throw error
     }
   }
 
@@ -43,7 +47,10 @@ export class AuthService {
         !$.CodeCache.get(signupDto.account) || 
         $.CodeCache.get(signupDto.account) !== signupDto.verifyCode
       ) {
-        return $.util.failRes(400, `Bad Verify Code!`)
+        throw new UnauthorizedException({
+          errType: 1,
+          message: 'Invalid verify code!'
+        })
       }
       signupDto.avatar = ''
       signupDto.role = 1
@@ -63,7 +70,7 @@ export class AuthService {
       })
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException(error)
+      throw error
     }
   }
 
@@ -77,7 +84,7 @@ export class AuthService {
       return $.util.successRes(0, { message: 'Verify code is sent!' })
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException(error)
+      throw error
     }
   }
 
@@ -86,7 +93,10 @@ export class AuthService {
       // 1.get github user code by user sso login
       const code = query.code
       if (query.error || !code) {
-        return $.util.failRes(401, query.error)
+        throw new UnauthorizedException({
+          errType: 1,
+          message: query.error
+        })
       }
 
       // 2.get access_token by code from github api
@@ -150,27 +160,8 @@ export class AuthService {
       })
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException(error)
+      throw error
     }
   }
 
-  // create(createAuthDto: CreateAuthDto) {
-  //   return 'This action adds a new auth';
-  // }
-
-  // findAll() {
-  //   return `This action returns all auth`;
-  // }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} auth`;
-  // }
-
-  // update(id: number, updateAuthDto: UpdateAuthDto) {
-  //   return `This action updates a #${id} auth`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} auth`;
-  // }
 }

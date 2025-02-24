@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Site } from './schemas/site.schema'
@@ -17,7 +17,7 @@ export class SiteService {
       return $.util.successRes(0, res)
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException(error)
+      throw error
     }
   }
 
@@ -31,7 +31,7 @@ export class SiteService {
       return $.util.successRes(0, res)
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException(error)
+      throw error
     }
   }
 
@@ -39,12 +39,15 @@ export class SiteService {
     try {
       const site = await this.siteModel.findOne({ _id: id, userId: user._id })
       if (!site) {
-        return $.util.failRes(404, `Site with ID ${id} not exist!`)
+        throw new NotFoundException({
+          errType: 1,
+          message: `Site with ID ${id} not exist!`
+        })
       }
       return $.util.successRes(0, site)
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException(error)
+      throw error
     }
   }
 
@@ -52,14 +55,17 @@ export class SiteService {
     try {
       const site = await this.siteModel.findOne({ _id: id, userId: user._id })
       if (!site) {
-        return $.util.failRes(404, `Site with ID ${id} not exist!`)
+        throw new NotFoundException({
+          errType: 1,
+          message: `Site with ID ${id} not exist!`
+        })
       }
       Object.assign(site, updateSiteDto)
       const res = await site.save()
       return $.util.successRes(0, res)
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException(error)
+      throw error
     }
   }
 
@@ -67,13 +73,16 @@ export class SiteService {
     try {
       const site = await this.siteModel.findOne({ _id: id, userId: user._id })
       if (!site) {
-        return $.util.failRes(404, `Site with ID ${id} not exist!`)
+        throw new NotFoundException({
+          errType: 1,
+          message: `Site with ID ${id} not exist!`
+        })
       }
       const res = await this.siteModel.findByIdAndDelete(site._id)
       return $.util.successRes(0, res)
     } catch (error) {
       $.logger.error("error:", error)
-      throw new InternalServerErrorException(error)
+      throw error
     }
   }
 }
