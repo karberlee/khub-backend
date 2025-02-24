@@ -18,7 +18,7 @@ export class DocService {
       createDocDto.createTime = currentTime
       createDocDto.updateTime = currentTime
       const res = await this.docModel.create(createDocDto)
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -46,7 +46,7 @@ export class DocService {
 
       Object.assign(selector, query)
       const res = await this.docModel.find(selector).populate(this.ownerPopulateObj)
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -60,7 +60,7 @@ export class DocService {
         selector['public'] = query.public
       }
       const res = await this.docModel.find(selector).populate(this.ownerPopulateObj)
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -76,7 +76,7 @@ export class DocService {
           message: `Doc with ID ${id} not exist!`
         })
       }
-      return $.util.successRes(0, doc)
+      return doc
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -101,7 +101,7 @@ export class DocService {
       Object.assign(doc, updateDocDto)
       doc.updateTime = new Date().toISOString()
       const res = await doc.save()
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -124,7 +124,7 @@ export class DocService {
         })
       }
       const res = await this.docModel.findByIdAndDelete(doc._id)
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error

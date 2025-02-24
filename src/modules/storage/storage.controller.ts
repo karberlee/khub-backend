@@ -51,35 +51,11 @@ export class StorageController {
   uploadImage(@Req() req: Request, @Param('type') type: string, @UploadedFile() file: Express.Multer.File) {
     $.logger.info(file)  // 上传的文件信息
     const user = req['user'] as ReqUserDto
-    return $.util.successRes(0, { 
+    return { 
       message: 'File uploaded successfully',
       path: `public/images/${user._id}/${type}`,
       file: file.filename,
-    })
+    }
   }
 
-  // @Post()
-  // create(@Body() createStorageDto: CreateStorageDto) {
-  //   return this.storageService.create(createStorageDto);
-  // }
-
-  // @Get()
-  // findAll() {
-  //   return this.storageService.findAll();
-  // }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.storageService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateStorageDto: UpdateStorageDto) {
-  //   return this.storageService.update(+id, updateStorageDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.storageService.remove(+id);
-  // }
 }

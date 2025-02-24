@@ -17,7 +17,7 @@ export class NoteService {
       createNoteDto.createTime = currentTime
       createNoteDto.updateTime = currentTime
       const res = await this.noteModel.create(createNoteDto)
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -45,7 +45,7 @@ export class NoteService {
         null,
         { sort: { updateTime: -1 } }
       )
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -61,7 +61,7 @@ export class NoteService {
           message: `Note with ID ${id} not exist!`
         })
       }
-      return $.util.successRes(0, note)
+      return note
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -80,7 +80,7 @@ export class NoteService {
       Object.assign(note, updateNoteDto)
       note.updateTime = new Date().toISOString()
       const res = await note.save()
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -97,7 +97,7 @@ export class NoteService {
         })
       }
       const res = await this.noteModel.findByIdAndDelete(note._id)
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error

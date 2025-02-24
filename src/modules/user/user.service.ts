@@ -27,7 +27,7 @@ export class UserService {
           message: `User with ID ${id} not exist!`
         })
       }
-      return $.util.successRes(0, user)
+      return user
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -50,7 +50,7 @@ export class UserService {
       statistics.doc.publicCount = await this.docModel.countDocuments({ owner: id, public: true })
       statistics.doc.privateCount = await this.docModel.countDocuments({ owner: id, public: false })
       statistics.doc.totalCount = await this.docModel.countDocuments({ owner: id })
-      return $.util.successRes(0, statistics)
+      return statistics
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -64,7 +64,7 @@ export class UserService {
       createUserDto.account = createUserDto.account.trim().toLowerCase()
       if (!createUserDto.name) createUserDto.name = 'New User'
       const res = await this.userModel.create(createUserDto)
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -74,7 +74,7 @@ export class UserService {
   async findAll() {
     try {
       const res = await this.userModel.find()
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -90,7 +90,7 @@ export class UserService {
           message: `User with ID ${id} not exist!`
         })
       }
-      return $.util.successRes(0, user)
+      return user
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -108,7 +108,7 @@ export class UserService {
       }
       Object.assign(user, updateUserDto) // 更新字段
       const res = await user.save()
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -124,7 +124,7 @@ export class UserService {
           message: `User with ID ${id} not exist!`
         })
       }
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error

@@ -27,13 +27,13 @@ export class AuthService {
           message: 'Incorrect account or password!'
         })
       }
-      return $.util.successRes(0, { 
+      return { 
         _id: user._id,
         account: user.account,
         name: user.name,
         type: user.type,
         role: user.role
-      })
+      }
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -60,14 +60,14 @@ export class AuthService {
       if (!signupDto.name) signupDto.name = 'New User'
       const user = await this.userModel.create(signupDto)
       $.CodeCache.del(signupDto.account)
-      return $.util.successRes(0, { 
+      return { 
         _id: user._id,
         account: user.account,
         name: user.name,
         avatar: user.avatar,
         role: user.role,
         type: user.type,
-      })
+      }
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -81,7 +81,7 @@ export class AuthService {
       $.CodeCache.set(email, verifyCode)
       const htmlTemplate = mailTemplates.verifyCodeTemplate(verifyCode)
       $.MailTool.sendMail(email, 'KHub Verify Code', null, htmlTemplate)
-      return $.util.successRes(0, { message: 'Verify code is sent!' })
+      return { message: 'Verify code is sent!' }
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -151,13 +151,13 @@ export class AuthService {
       }
 
       // 6.return user info to create token
-      return $.util.successRes(0, {
+      return {
         _id: githubUser._id,
         account: githubUser.account,
         name: githubUser.name,
         type: githubUser.type,
         role: githubUser.role
-      })
+      }
     } catch (error) {
       $.logger.error("error:", error)
       throw error

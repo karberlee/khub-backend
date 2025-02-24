@@ -14,7 +14,7 @@ export class SiteService {
     try {
       createSiteDto.userId = user._id
       const res = await this.siteModel.create(createSiteDto)
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -28,7 +28,7 @@ export class SiteService {
         selector['userId'] = user._id
       }
       const res = await this.siteModel.find(selector)
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -44,7 +44,7 @@ export class SiteService {
           message: `Site with ID ${id} not exist!`
         })
       }
-      return $.util.successRes(0, site)
+      return site
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -62,7 +62,7 @@ export class SiteService {
       }
       Object.assign(site, updateSiteDto)
       const res = await site.save()
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error
@@ -79,7 +79,7 @@ export class SiteService {
         })
       }
       const res = await this.siteModel.findByIdAndDelete(site._id)
-      return $.util.successRes(0, res)
+      return res
     } catch (error) {
       $.logger.error("error:", error)
       throw error
