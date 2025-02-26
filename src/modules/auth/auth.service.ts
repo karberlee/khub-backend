@@ -2,14 +2,15 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { User } from '@/modules/user/schemas/user.schema'
+import { MailService } from '@/common/utils/mail.service'
 import { UtilsService } from '@/common/utils/utils.service'
 import { CreateUserDto } from '@/modules/user/dto/create-user.dto'
-import * as mailTemplates from '@/common/utils/mailTemplates'
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<User>,
+    private readonly mailService: MailService,
     private readonly utilsService: UtilsService,
   ) { }
   private readonly signup_account_type = 'email_signup'
@@ -83,8 +84,8 @@ export class AuthService {
       const verifyCode = this.utilsService.generateVerifyCode(6)
       $.logger.info('verifyCode:', verifyCode)
       $.CodeCache.set(email, verifyCode)
-      const htmlTemplate = mailTemplates.verifyCodeTemplate(verifyCode)
-      $.MailTool.sendMail(email, 'KHub Verify Code', null, htmlTemplate)
+      const htmlTemplate = this.mailService.getVerifyCodeTemplate(verifyCode)
+      this.mailService.sendMail(email, 'KHub Verify Code', null, htmlTemplate)
       return { message: 'Verify code is sent!' }
     } catch (error) {
       $.logger.error("error:", error)
