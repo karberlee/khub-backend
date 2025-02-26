@@ -2,12 +2,16 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { User } from '@/modules/user/schemas/user.schema'
+import { UtilsService } from '@/common/utils/utils.service'
 import { CreateUserDto } from '@/modules/user/dto/create-user.dto'
 import * as mailTemplates from '@/common/utils/mailTemplates'
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel('User') private readonly userModel: Model<User>) { }
+  constructor(
+    @InjectModel('User') private readonly userModel: Model<User>,
+    private readonly utilsService: UtilsService,
+  ) { }
   private readonly signup_account_type = 'email_signup'
   private readonly github_account_type = 'github_oauth'
   private readonly github_client_id = process.env.GITHUB_CLIENT_ID
@@ -76,7 +80,7 @@ export class AuthService {
 
   async sendCode(email: string) {
     try {
-      const verifyCode = $.util.generateVerifyCode(6)
+      const verifyCode = this.utilsService.generateVerifyCode(6)
       $.logger.info('verifyCode:', verifyCode)
       $.CodeCache.set(email, verifyCode)
       const htmlTemplate = mailTemplates.verifyCodeTemplate(verifyCode)

@@ -10,6 +10,7 @@ import { HttpExceptionFilter } from '@/common/filters/http-exception.filter'
 import { LoggingInterceptor } from '@/common/interceptors/logging.interceptor'
 import { RefreshInterceptor } from '@/common/interceptors/refresh.interceptor'
 import { PrometheusMiddleware } from '@/common/middlewares/prometheus.middlewares'
+import { UtilsModule } from '@/common/utils/utils.module'
 import { PrometheusModule } from '@/modules/prometheus/prometheus.module'
 import { HealthModule } from '@/modules/health/health.module'
 import { StorageModule } from '@/modules/storage/storage.module'
@@ -25,7 +26,8 @@ import { DocModule } from '@/modules/doc/doc.module'
       rootPath: path.join(__dirname, process.env.NODE_ENV==='prod' ? '' : '..', 'public'), // 设置静态文件服务目录
       serveRoot: '/public/', // 文件在服务器上的访问路径
     }),
-    MongooseModule.forRoot(process.env.MONGO_URI), 
+    MongooseModule.forRoot(process.env.MONGO_URI),
+    UtilsModule,
     PrometheusModule,
     HealthModule,
     StorageModule,
