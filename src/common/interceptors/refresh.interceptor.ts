@@ -1,16 +1,13 @@
-import {
-  Injectable,
-  NestInterceptor,
-  ExecutionContext,
-  CallHandler,
-} from '@nestjs/common'
-import { Observable } from 'rxjs'
-import { tap } from 'rxjs/operators'
-import { JWT } from '@/common/utils/jwt'
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common'
+import { Observable, tap } from 'rxjs'
+import { JWTService } from '@/common/utils/jwt.service'
 
 @Injectable()
 export class RefreshInterceptor implements NestInterceptor {
-  private readonly JWT_EXPIRES: string = process.env.JWT_EXPIRES
+
+  constructor(
+    private readonly jwtService: JWTService,
+  ) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request = context.switchToHttp().getRequest()
@@ -22,7 +19,7 @@ export class RefreshInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap(() => {
         if (url.indexOf('/auth') === -1) {
-          const newToken = JWT.refreshToken(token, { expiresIn: this.JWT_EXPIRES })
+          const newToken = this.jwtService.refreshToken(token)
           if (newToken) {
             response.setHeader('Authorization', `Bearer ${newToken}`)
           }
@@ -30,4 +27,5 @@ export class RefreshInterceptor implements NestInterceptor {
       }),
     )
   }
+
 }

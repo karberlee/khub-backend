@@ -1,16 +1,22 @@
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common'
-import { JWT } from '@/common/utils/jwt'
+import { JWTService } from '@/common/utils/jwt.service'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  private readonly authApiList: string[] = [
-    '/auth/login',
-    '/auth/signup',
-    '/auth/sendCode',
-    '/auth/github/callback',
-    '/prometheus/metrics',
-    '/health',
-  ]
+  private readonly authApiList: string[]
+
+  constructor(
+    private readonly jwtService: JWTService,
+  ) {
+    this.authApiList = [
+      '/auth/login',
+      '/auth/signup',
+      '/auth/sendCode',
+      '/auth/github/callback',
+      '/prometheus/metrics',
+      '/health',
+    ]
+  }
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest()
@@ -28,7 +34,7 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const decoded = JWT.verifyToken(token)
+      const decoded = this.jwtService.verifyToken(token)
       if (!decoded) {
         throw new ForbiddenException({
           errType: 2,
