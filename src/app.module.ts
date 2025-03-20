@@ -9,10 +9,7 @@ import { AuthGuard } from '@/common/guards/auth.guard'
 import { HttpExceptionFilter } from '@/common/filters/http-exception.filter'
 import { LoggingInterceptor } from '@/common/interceptors/logging.interceptor'
 import { RefreshInterceptor } from '@/common/interceptors/refresh.interceptor'
-import { PrometheusMiddleware } from '@/common/middlewares/prometheus.middlewares'
 import { UtilsModule } from '@/common/utils/utils.module'
-import { PrometheusModule } from '@/modules/prometheus/prometheus.module'
-import { HealthModule } from '@/modules/health/health.module'
 import { StorageModule } from '@/modules/storage/storage.module'
 import { AuthModule } from '@/modules/auth/auth.module'
 import { UserModule } from '@/modules/user/user.module'
@@ -28,8 +25,6 @@ import { DocModule } from '@/modules/doc/doc.module'
     }),
     MongooseModule.forRoot(process.env.MONGO_URI),
     UtilsModule,
-    PrometheusModule,
-    HealthModule,
     StorageModule,
     AuthModule,
     UserModule,
@@ -61,7 +56,7 @@ import { DocModule } from '@/modules/doc/doc.module'
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(PrometheusMiddleware)
+      .apply()
       .forRoutes('*') // 监控所有路由
   }
 }

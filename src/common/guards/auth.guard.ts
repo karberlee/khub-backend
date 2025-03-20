@@ -13,8 +13,6 @@ export class AuthGuard implements CanActivate {
       '/auth/signup',
       '/auth/sendCode',
       '/auth/github/callback',
-      '/prometheus/metrics',
-      '/health',
     ]
   }
 
