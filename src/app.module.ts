@@ -13,6 +13,7 @@ import { UtilsModule } from '@/common/utils/utils.module'
 import { StorageModule } from '@/modules/storage/storage.module'
 import { AuthModule } from '@/modules/auth/auth.module'
 import { UserModule } from '@/modules/user/user.module'
+import { WorkspaceModule } from '@/modules/workspace/workspace.module'
 import { SiteModule } from '@/modules/site/site.module'
 import { NoteModule } from '@/modules/note/note.module'
 import { DocModule } from '@/modules/doc/doc.module'
@@ -28,6 +29,7 @@ import { DocModule } from '@/modules/doc/doc.module'
     StorageModule,
     AuthModule,
     UserModule,
+    WorkspaceModule,
     SiteModule,
     NoteModule,
     DocModule,

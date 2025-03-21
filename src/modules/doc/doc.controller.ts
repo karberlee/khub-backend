@@ -37,17 +37,6 @@ export class DocController {
     return this.docService.findAll(user, query)
   }
 
-  @Get('mine')
-  @ApiOperation({ summary: 'Find docs of mine' })
-  @ApiResponse({ status: 200, description: 'Successful response' })
-  @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  findMine(@Req() req: Request) {
-    const user = req['user'] as ReqUserDto
-    const query = req.query
-    return this.docService.findMine(user, query)
-  }
-
   @Get(':id')
   @ApiOperation({ summary: 'Find doc by ID' })
   @ApiParam({ name: 'id', description: 'The doc ID', type: String })

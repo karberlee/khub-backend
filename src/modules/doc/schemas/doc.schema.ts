@@ -1,5 +1,5 @@
 import { Schema, Document } from 'mongoose'
-import { User } from "@/modules/user/schemas/user.schema";
+import { User } from '@/modules/user/schemas/user.schema'
 
 export const DocSchema = new Schema<Doc>(
   {

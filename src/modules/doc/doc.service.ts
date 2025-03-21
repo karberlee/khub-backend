@@ -53,20 +53,6 @@ export class DocService {
     }
   }
 
-  async findMine(user: ReqUserDto, query: any) {
-    try {
-      const selector: object = { public: true }
-      if (query?.hasOwnProperty('public')) {
-        selector['public'] = query.public
-      }
-      const res = await this.docModel.find(selector).populate(this.ownerPopulateObj)
-      return res
-    } catch (error) {
-      $.logger.error("error:", error)
-      throw error
-    }
-  }
-
   async findOne(user: ReqUserDto, id: string) {
     try {
       const doc = await this.docModel.findOne({ _id: id }).populate(this.ownerPopulateObj)
