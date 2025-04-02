@@ -7,8 +7,8 @@ export class UpdateWorkspaceDto extends PartialType(CreateWorkspaceDto) {
   @IsOptional()
   @IsBoolean()
   @ApiPropertyOptional({
-    description: 'Is the workspace disabled',
-    example: false,
+    description: 'Is the workspace active',
+    example: true,
   })
-  readonly disabled?: boolean
+  readonly active?: boolean
 }

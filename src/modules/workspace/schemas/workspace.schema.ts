@@ -21,8 +21,8 @@ export class Workspace extends Document {
   @Prop({ required: true, default: false })
   default: boolean
 
-  @Prop({ required: true, default: false })
-  disabled: boolean
+  @Prop({ required: true, default: true })
+  active: boolean
 }
 
 export const WorkspaceSchema = SchemaFactory.createForClass(Workspace)

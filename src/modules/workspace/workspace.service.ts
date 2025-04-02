@@ -31,7 +31,7 @@ export class WorkspaceService {
       }
       const res = await this.workspaceModel.find(
         selector,
-        [ '_id', 'name', 'default', 'disabled', 'createTime' ], // 返回字段指定
+        [ '_id', 'name', 'default', 'active', 'createTime' ], // 返回字段指定
         { 
           sort: { createTime: -1 },
           // limit: 1,
