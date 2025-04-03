@@ -1,4 +1,4 @@
-export type UserStatistics = {
+export type StatisticModel = {
   siteCount: number
   noteCount: number
   doc: {

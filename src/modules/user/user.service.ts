@@ -5,9 +5,10 @@ import { User } from './schemas/user.schema'
 import { Site } from '@/modules/site/schemas/site.schema'
 import { Note } from '@/modules/note/schemas/note.schema'
 import { Doc } from '@/modules/doc/schemas/doc.schema'
+import { CheckUserDto } from './dto/check-user.dto'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { UserStatistics } from '@/types/type'
+import { StatisticModel } from '@/types/type'
 
 @Injectable()
 export class UserService {
@@ -34,9 +35,25 @@ export class UserService {
     }
   }
 
+  async check(account: string, checkUserDto: CheckUserDto) {
+    try {
+      const user = await this.userModel.findOne({ account, password: checkUserDto.password })
+      if (!user) {
+        throw new NotFoundException({
+          errType: 1,
+          message: `Check User Failed!`
+        })
+      }
+      return user
+    } catch (error) {
+      $.logger.error("error:", error)
+      throw error
+    }
+  }
+
   async statistics(id: string) {
     try {
-      const statistics: UserStatistics = {
+      const statistics: StatisticModel = {
         siteCount: 0,
         noteCount: 0,
         doc: {

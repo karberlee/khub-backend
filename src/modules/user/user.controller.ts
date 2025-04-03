@@ -3,6 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/s
 import { ParseObjectIdPipe } from '@/common/pipes/parse-object-id.pipe'
 import { Request } from 'express'
 import { UserService } from './user.service'
+import { CheckUserDto } from './dto/check-user.dto'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { ReqUserDto } from '@/modules/user/dto/req-user.dto'
@@ -20,6 +21,16 @@ export class UserController {
   reload(@Req() req: Request) {
     const user = req['user'] as ReqUserDto
     return this.userService.reload(user._id)
+  }
+
+  @Post('check')
+  @ApiOperation({ summary: 'Check user password' })
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
+  check(@Req() req: Request, @Body() checkUserDto: CheckUserDto) {
+    const user = req['user'] as ReqUserDto
+    return this.userService.check(user.account, checkUserDto)
   }
 
   @Get('statistics')

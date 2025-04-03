@@ -23,15 +23,16 @@ export class WorkspaceController {
     return this.workspaceService.findAll(user, query)
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.workspaceService.findOne(+id);
-  // }
+  @Get(':id/statistic')
+  getStatistic(@Req() req: Request, @Param('id', ParseObjectIdPipe) id: string) {
+    const user = req['user'] as ReqUserDto
+    return this.workspaceService.getStatistic(user, id)
+  }
 
   @Patch(':id')
   update(@Req() req: Request, @Param('id', ParseObjectIdPipe) id: string,  @Body() updateWorkspaceDto: UpdateWorkspaceDto) {
     const user = req['user'] as ReqUserDto
-    return this.workspaceService.update(user, id, updateWorkspaceDto);
+    return this.workspaceService.update(user, id, updateWorkspaceDto)
   }
 
   @Delete(':id')
