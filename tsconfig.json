@@ -1,24 +1,24 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "commonjs", // 指定生成代码的模块系统
     "declaration": false, // 不生成.d.ts文件
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "paths": {
+    "removeComments": true, // 是否移除注释。true 表示移除所有注释（包括 // 和 /*...*/）。这有助于减小最终输出的文件大小，通常在生产环境中使用。
+    "emitDecoratorMetadata": true, // 这个选项用于支持装饰器（@decorator）。如果设置为 true，TypeScript 编译器将为装饰器生成一些元数据。这是与 Angular 等框架一起使用时常见的设置。
+    "experimentalDecorators": true, // 启用实验性装饰器语法的支持。装饰器是 TypeScript 和 JavaScript 中的一个特性，可以用于类、方法、属性等的注解。此选项是开启装饰器的必需项。
+    "allowSyntheticDefaultImports": true, // 允许从没有默认导出的模块中默认导入。这对于兼容 ES 模块和 CommonJS 模块有用。例如，如果一个模块没有默认导出，import foo from 'bar' 语法将不会报错。它只会影响 TypeScript 的类型检查。
+    "target": "ES2021", // 指定编译后的 JavaScript 代码的目标版本。这里使用的是 ES2021，表示 TypeScript 会生成符合 ECMAScript 2021（ES12）规范的代码。常见的目标值有 ES5, ES6（ES2015），以及更高版本。
+    "sourceMap": true, // 如果设置为 true，TypeScript 会生成 .map 文件，这对于调试非常有用。生成的 .map 文件使得你可以在浏览器或 Node.js 中直接调试 TypeScript 代码，而不需要手动转换为 JavaScript。
+    "outDir": "./dist", // 指定编译后的文件的输出目录。所有编译后的文件将输出到 ./dist 目录中。
+    "baseUrl": "./", // 设置解析模块时的基础目录。通常与 paths 配合使用。它指定了非相对模块导入时的基础路径，这里设为 "./" 表示从项目的根目录开始解析。
+    "paths": {  // 这个选项用于自定义模块解析的路径映射。例如，"@/*": ["src/*"] 表示在代码中，所有以 @/ 开头的模块路径（如 @/utils）会被解析到 src 目录下。这样可以更简洁地引用模块。
       "@/*": ["src/*"]
     },
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "incremental": true, // 如果设置为 true，TypeScript 会启用增量编译。增量编译会存储编译的中间状态，避免每次都重新编译整个项目，提高编译速度。
+    "skipLibCheck": true, // 设置为 true 时，TypeScript 会跳过库文件的类型检查。这对于大型项目来说，可以提高编译速度，但可能会错过一些潜在的类型错误。
+    "strictNullChecks": false, // 如果设置为 true，TypeScript 会严格检查 null 和 undefined 的类型。这意味着你不能将 null 或 undefined 赋值给其他类型。设置为 false 表示不强制进行这样的检查。
+    "noImplicitAny": false, // 如果设置为 true，TypeScript 会禁止隐式的 any 类型。也就是说，如果变量没有明确指定类型，TypeScript 会报错。在你的配置中，设置为 false，这意味着可以有隐式的 any 类型。
+    "strictBindCallApply": false, // 启用严格的 bind、call 和 apply 类型检查。如果设置为 true，TypeScript 会更严格地检查 bind、call 和 apply 方法的类型。设置为 false 表示允许一些宽松的检查。
+    "forceConsistentCasingInFileNames": false, // 如果设置为 true，TypeScript 会强制文件名的大小写一致性。例如，import foo from './Foo' 和 import foo from './foo' 会被视为不同的文件名。设置为 false 时，大小写不敏感。
+    "noFallthroughCasesInSwitch": false // 如果设置为 true，TypeScript 会检查 switch 语句中的 case 是否有“fallthrough”现象，即是否没有 break 或 return，如果没有，会报错。设置为 false，则不进行此检查。
   }
 }
