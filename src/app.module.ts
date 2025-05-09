@@ -17,6 +17,7 @@ import { WorkspaceModule } from '@/modules/workspace/workspace.module'
 import { SiteModule } from '@/modules/site/site.module'
 import { NoteModule } from '@/modules/note/note.module'
 import { DocModule } from '@/modules/doc/doc.module'
+import { AssetModule } from '@/modules/asset/asset.module'
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { DocModule } from '@/modules/doc/doc.module'
     SiteModule,
     NoteModule,
     DocModule,
+    AssetModule,
   ],
   controllers: [AppController],
   providers: [
