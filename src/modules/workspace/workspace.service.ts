@@ -19,10 +19,11 @@ export class WorkspaceService {
     @InjectModel('Doc') private readonly docModel: Model<Doc>,
   ) { }
 
-  async create(user: ReqUserDto, createWorkspaceDto: CreateWorkspaceDto) {
+  async create(user: ReqUserDto, createWorkspaceDto: CreateWorkspaceDto, isDefault: boolean = false) {
     try {
       const workspaceObj = { ...createWorkspaceDto }
       workspaceObj['owner'] = user._id
+      workspaceObj['default'] = isDefault
       const workspace = new this.workspaceModel(workspaceObj)
       await workspace.save()
       return { message: 'Success!' }

@@ -4,7 +4,9 @@ import { Model } from 'mongoose'
 import { User } from '@/modules/user/schemas/user.schema'
 import { MailService } from '@/common/utils/mail.service'
 import { UtilsService } from '@/common/utils/utils.service'
+import { WorkspaceService } from '@/modules/workspace/workspace.service'
 import { CreateUserDto } from '@/modules/user/dto/create-user.dto'
+import { ReqUserDto } from '@/modules/user/dto/req-user.dto'
 
 @Injectable()
 export class AuthService {
@@ -12,6 +14,7 @@ export class AuthService {
     @InjectModel('User') private readonly userModel: Model<User>,
     private readonly mailService: MailService,
     private readonly utilsService: UtilsService,
+    private readonly workspaceService: WorkspaceService,
   ) { }
   private readonly signup_account_type = 'email_signup'
   private readonly github_account_type = 'github_oauth'
@@ -64,6 +67,14 @@ export class AuthService {
       signupDto.account = signupDto.account.trim().toLowerCase()
       if (!signupDto.name) signupDto.name = 'New User'
       const user = await this.userModel.create(signupDto)
+      const reqUserDto: ReqUserDto = {
+        _id: user._id as string,
+        account: user.account as string,
+        role: user.role as number,
+        iat: 0,
+        exp: 0,
+      }
+      await this.workspaceService.create(reqUserDto, { name: 'Default' }, true)
       $.CodeCache.del(signupDto.account)
       return { 
         _id: user._id,
@@ -138,12 +149,12 @@ export class AuthService {
       $.logger.info('userInfo:', userInfo)
 
       // 4.search user by github id
-      let githubUser = await this.userModel.findOne({ account: userInfo.id, type: this.github_account_type })
+      let githubUser = await this.userModel.findOne({ account: `github_${userInfo.id}`, type: this.github_account_type })
 
       // 5.create user account if not exist
       if (!githubUser) {
         const newUser: CreateUserDto = {
-          account: userInfo.id,
+          account: `github_${userInfo.id}`,
           password: userInfo.login,
           name: userInfo.name || userInfo.login || 'New User',
           avatar: userInfo.avatar_url,
@@ -152,6 +163,14 @@ export class AuthService {
           createTime: new Date().toISOString()
         }
         githubUser = await this.userModel.create(newUser)
+        const reqUserDto: ReqUserDto = {
+          _id: githubUser._id as string,
+          account: githubUser.account as string,
+          role: githubUser.role as number,
+          iat: 0,
+          exp: 0,
+        }
+        await this.workspaceService.create(reqUserDto, { name: 'Default' }, true)
         $.logger.info('create user:', githubUser)
       }
 
