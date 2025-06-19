@@ -3,12 +3,14 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Workspace } from '@/modules/workspace/schemas/workspace.schema'
 import { Asset } from '@/modules/asset/schemas/asset.schema'
+// import { UtilsService } from '@/common/utils/utils.service'
 
 @Injectable()
 export class ResourceAccessGuard implements CanActivate {
   constructor(
     @InjectModel('Workspace') private readonly workspaceModel: Model<Workspace>,
     @InjectModel('Asset') private readonly assetModel: Model<Asset>,
+    // private readonly utilsService: UtilsService,
   ) { }
 
   private readonly modelMapping: object = {
@@ -56,8 +58,9 @@ export class ResourceAccessGuard implements CanActivate {
     }
 
     const workspaceCheck = await this.workspaceModel.findOne({
-      _id: workspaceId,
-      owner: user._id,
+      _id: workspaceId, //_id 是 MongoDB 的主键字段，Mongoose 总是自动 cast 它
+      // owner: this.utilsService.toObjectId(user._id), // 其它字段需要手动转换为 ObjectId 类型
+      owner: user._id, // 其它字段需要手动转换为 ObjectId 类型
       active: true,
     }).exec()
 

@@ -20,7 +20,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       errType = exceptionResponse['errType'] as number
     }
 
-    $.logger.error(`API ${request.url} exception:`, exceptionResponse)
+    $.logger.error(`API ${request.method} ${request.url} exception:`, exceptionResponse)
 
     response
       .status(status)

@@ -9,6 +9,7 @@ import { CreateWorkspaceDto } from './dto/create-workspace.dto'
 import { UpdateWorkspaceDto } from './dto/update-workspace.dto'
 import { ReqUserDto } from '@/modules/user/dto/req-user.dto'
 import { StatisticModel } from '@/types/type'
+// import { UtilsService } from '@/common/utils/utils.service'
 
 @Injectable()
 export class WorkspaceService {
@@ -17,11 +18,13 @@ export class WorkspaceService {
     @InjectModel('Site') private readonly siteModel: Model<Site>,
     @InjectModel('Note') private readonly noteModel: Model<Note>,
     @InjectModel('Doc') private readonly docModel: Model<Doc>,
+    // private readonly utilsService: UtilsService,
   ) { }
 
   async create(user: ReqUserDto, createWorkspaceDto: CreateWorkspaceDto, isDefault: boolean = false) {
     try {
       const workspaceObj = { ...createWorkspaceDto }
+      // workspaceObj['owner'] = this.utilsService.toObjectId(user._id)
       workspaceObj['owner'] = user._id
       workspaceObj['default'] = isDefault
       const workspace = new this.workspaceModel(workspaceObj)
@@ -37,6 +40,7 @@ export class WorkspaceService {
     try {
       const selector: object = {}
       if (user && user.role > 0) {
+        // selector['owner'] = this.utilsService.toObjectId(user._id)
         selector['owner'] = user._id
       }
       const res = await this.workspaceModel.find(
@@ -104,7 +108,11 @@ export class WorkspaceService {
 
   async remove(user: ReqUserDto, id: string) {
     try {
-      const workspace = await this.workspaceModel.findOne({ _id: id, owner: user._id })
+      const workspace = await this.workspaceModel.findOne({
+        _id: id,
+        // owner: this.utilsService.toObjectId(user._id),
+        owner: user._id,
+      })
       if (!workspace) {
         throw new NotFoundException({
           errType: 1,

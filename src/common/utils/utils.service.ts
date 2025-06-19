@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, BadRequestException } from '@nestjs/common'
 import { randomInt } from 'crypto'
+import { Types } from 'mongoose'
 
 @Injectable()
 export class UtilsService {
@@ -10,5 +11,16 @@ export class UtilsService {
       verifyCode += randomDigit.toString()
     }
     return verifyCode
+  }
+
+  toObjectId(id: string | Types.ObjectId): Types.ObjectId {
+    if (id instanceof Types.ObjectId) return id
+    if (typeof id === 'string' && Types.ObjectId.isValid(id)) {
+      return new Types.ObjectId(id)
+    }
+    throw new BadRequestException({
+      errType: 1,
+      message: `Invalid ObjectId: ${id}`
+    })
   }
 }
