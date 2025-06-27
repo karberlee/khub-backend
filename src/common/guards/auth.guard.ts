@@ -1,4 +1,4 @@
-import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common'
+import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common'
 import { JWTService } from '@/common/utils/jwt.service'
 
 @Injectable()
@@ -25,18 +25,18 @@ export class AuthGuard implements CanActivate {
 
     const token = request.headers['authorization']?.split(' ')[1] // 获取 Bearer token
     if (!token) {
-      throw new ForbiddenException({
+      throw new UnauthorizedException({
         errType: 1,
-        message: `Forbidden! Authorization token missing!`
+        message: `Unauthorized! Authorization token missing!`
       })
     }
 
     try {
       const decoded = this.jwtService.verifyToken(token)
       if (!decoded) {
-        throw new ForbiddenException({
+        throw new UnauthorizedException({
           errType: 2,
-          message: `Forbidden! Invalid token!`
+          message: `Unauthorized! Invalid token!`
         })
       }
       request.user = decoded // 将解码后的用户信息附加到请求对象上
