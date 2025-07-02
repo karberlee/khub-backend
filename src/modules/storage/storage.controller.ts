@@ -36,7 +36,7 @@ export class StorageController {
         },
       }),
       fileFilter: (req, file, cb) => {
-        const allowedMimes = ['image/jpeg', 'image/png', 'image/gif'] // 允许的图片格式
+        const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp'] // 允许的图片格式
         if (allowedMimes.includes(file.mimetype)) {
           cb(null, true) // 通过验证
         } else {
@@ -44,7 +44,7 @@ export class StorageController {
         }
       },
       limits: {
-        fileSize: 1024 * 1024 * 20, // 限制文件大小（20MB）
+        fileSize: 1024 * 1024 * 30, // 限制文件大小（30MB）
       },
     }),
   )
